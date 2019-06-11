@@ -2,11 +2,13 @@
 import click
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 from config import Config
 
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app():
@@ -14,6 +16,7 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
+    migrate.init_app(app, db)
 
     @app.context_processor  # Flask的上下文处理器，向模板的上下文插入新变量（可以是值和函数）
     def inject_context():
