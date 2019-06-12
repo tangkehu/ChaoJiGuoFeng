@@ -1,13 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>超级国风</title>
-</head>
-<body>
-<h1>青少年经典诵读全媒体平台</h1>
-{{ BOOT_CDN }}
-{{ test_def(3) }}
+<!doctype html>
+<html lang="zh-CN" {% block html_tag %}{% endblock %}>
+  <head {% block head-tag %}{% endblock %}>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-</body>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    {% if BOOT_CDN %}
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    {% else %}
+
+    {% endif %}
+
+    {% block head %}{% endblock %}
+
+    <title>超级国风</title>
+
+  </head>
+
+  <body {% block body-tag %}{% endblock %}>
+
+    {% block body %}{% endblock %}
+
+  </body>
 </html>
