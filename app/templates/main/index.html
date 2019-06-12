@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="container">
-        <h1>欢迎来到超级国风</h1>
-    </div>
+  <div class="shadow py-2">
+      <div class="container">
+          <img src="{{ url_for('static', filename='logo.gif') }}" width="80rem" height="80rem"><span class="h2 align-middle">超级国风</span>
+      </div>
+  </div>
 
 {% endblock %}
