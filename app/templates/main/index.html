@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
 
 {% block body %}
-  <div class="shadow py-2">
-      <div class="container">
-          <img src="{{ url_for('static', filename='logo.gif') }}" width="80rem" height="80rem"><span class="h2 align-middle">超级国风</span>
-      </div>
-  </div>
+
+    <div class="container py-2">
+        <img src="{{ url_for('static', filename='logo.gif') }}" width="40rem" height="40rem"><span class="h4 align-middle">超级国风</span>
+    </div>
+
+    <div class="py-5" style="background: url('{{ url_for('static', filename='bg-img.png') }}') no-repeat; background-size: cover;">
+        <div class="container text-center py-2" style="background: rgba(255,255,255,0.3)">
+            <img src="{{ url_for('static', filename='logo.gif') }}" width="120rem" height="120rem">
+            <h1 class="display-4">超级国风</h1>
+            <p class="lead">青少年经典诵读全媒体平台</p>
+            <hr class="my-4 rounded-pill border-0" style="width: 5rem; height: 0.5rem; background: #fd8562">
+            <p>海光老师经典诵读会，倡亲子共读、诵国学典籍、传孔孟之道、承华夏文明、浸山水之间、品书香之韵、养浩然正气。</p>
+        </div>
+    </div>
 
 {% endblock %}
