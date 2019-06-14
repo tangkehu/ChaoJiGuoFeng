@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <!-- 主页LOGO -->
+    <div class="container py-2">
+        <img src="{{ url_for('static', filename='logo.gif') }}" width="40rem" height="40rem"><span class="h4 align-middle">超级国风</span>
+    </div>
+
+    <!-- 主页主图 -->
+    <div class="py-5" style="background: url('{{ url_for('static', filename='bg-img.png') }}') no-repeat; background-size: cover;">
+        <div class="container text-center py-5">
+            <div class="m-2 px-2 py-5" style="background: rgba(255,255,255,0.4); color: #303b4a">
+                <img src="{{ url_for('static', filename='logo.gif') }}" width="120rem" height="120rem">
+                <h1 class="display-3" style="font-weight: bolder;">超级国风</h1>
+                <p class="h3">青少年经典诵读全媒体平台</p>
+                <hr class="my-4 rounded-pill border-0" style="width: 3rem; height: 0.2rem; background: #fd8562">
+                <p class="lead">海光老师经典诵读会，倡亲子共读、诵国学典籍、传孔孟之道、承华夏文明、浸山水之间、品书香之韵、养浩然正气。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主页导航 -->
+    <div class="shadow-sm">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <div class="row justify-content-center">
+                    <a class="text-decoration-none text-white" href="#">
+                    <div class="rounded-circle text-center" style="width: 5rem; height: 5rem; background: #fd8562">
+                        <img src="{{ url_for('static', filename='img/nav1.gif') }}" width="54" height="54">
+                        <p class="small">最新动态</p>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <a class="text-decoration-none text-white" href="#">
+                    <div class="rounded-circle text-center" style="width: 5rem; height: 5rem; background: #fd8562">
+                        <img src="{{ url_for('static', filename='img/nav2.gif') }}" width="54" height="54">
+                        <p class="small">活动报名</p>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <a class="text-decoration-none text-white" href="#">
+                    <div class="rounded-circle text-center" style="width: 5rem; height: 5rem; background: #fd8562">
+                        <img src="{{ url_for('static', filename='img/nav3.gif') }}" width="54" height="54">
+                        <p class="small">作品展示</p>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <a class="text-decoration-none text-white" href="#">
+                    <div class="rounded-circle text-center" style="width: 5rem; height: 5rem; background: #fd8562">
+                        <img src="{{ url_for('static', filename='img/nav4.gif') }}" width="54" height="54">
+                        <p class="small">相关产品</p>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <a class="text-decoration-none text-white" href="#">
+                    <div class="rounded-circle text-center" style="width: 5rem; height: 5rem; background: #fd8562">
+                        <img src="{{ url_for('static', filename='img/nav5.gif') }}" width="54" height="54">
+                        <p class="small">关于我们</p>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- 主页内容 -->
+    <div class="container pb-5">
+        <div class="row">
+            <!-- 最新动态 -->
+            <div class="col-md-6 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav1.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">最新动态</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-unstyled">
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                              <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                              <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                              <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                              <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                              <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                              <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活动报名 -->
+            <div class="col-md-6 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav2.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">活动报名</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-unstyled">
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/hd.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">陪伴成长——妈妈的坚持，转移到孩子的坚持</h5>
+                              <p class="mb-0">亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
+                              <a href="#" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/hd.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">陪伴成长——妈妈的坚持，转移到孩子的坚持</h5>
+                              <p class="mb-0">亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
+                              <a href="#" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/hd.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">陪伴成长——妈妈的坚持，转移到孩子的坚持</h5>
+                              <p class="mb-0">亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
+                              <a href="#" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 作品展示 -->
+            <div class="col-12 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav3.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">作品展示</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"> <div style="height: 20rem;"></div></div>
+                </div>
+            </div>
+
+            <!-- 相关产品 -->
+            <div class="col-12 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav4.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">相关产品</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"> <div style="height: 20rem;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主页底部 -->
+    <div style="height: 15rem; background: url('{{ url_for('static', filename='bg-img.png') }}') no-repeat; background-size: cover; background-position: bottom; color: #303b4a">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center no-gutters">
+                <div class="col">
+                    <img src="{{ url_for('static', filename='logo.gif') }}" width="100rem" height="100rem">
+                    <span class="h1 align-middle pr-2" style="font-weight: bolder; border-right: 0.2rem solid #303b4a;">超级国风</span>
+                    <span class="d-inline-block align-middle ml-2 pt-1">
+                        Copyright &copy; 超级国风<br>
+                        <a class="text-decoration-none" style="color: #303b4a" href="#">蜀ICP备05006454号</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
