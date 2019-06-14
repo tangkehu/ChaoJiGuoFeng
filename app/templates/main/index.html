@@ -80,69 +80,128 @@
 
     <!-- 主页内容 -->
     <div class="container pb-5">
-
-        <!-- 最新动态 -->
-        <div class="row pt-5">
-            <div class="col">
-                <img src="{{ url_for('static', filename='img/nav1.gif') }}" width="60" height="60">
-                <span class="lead align-bottom" style="font-weight: bolder">最新动态</span>
-                <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-                <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
-            </div>
-        </div>
-
         <div class="row">
-            <div class="col bg-info"> <div style="height: 20rem;"></div></div>
-        </div>
-
-        <!-- 活动报名 -->
-        <div class="row pt-5">
-            <div class="col">
-                <img src="{{ url_for('static', filename='img/nav2.gif') }}" width="60" height="60">
-                <span class="lead align-bottom" style="font-weight: bolder">活动报名</span>
-                <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-                <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+            <!-- 最新动态 -->
+            <div class="col-md-6 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav1.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">最新动态</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-unstyled">
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                              <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                              <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                              <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                              <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                              <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                              <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col bg-info"> <div style="height: 20rem;"></div></div>
-        </div>
-
-        <!-- 作品展示 -->
-        <div class="row pt-5">
-            <div class="col">
-                <img src="{{ url_for('static', filename='img/nav3.gif') }}" width="60" height="60">
-                <span class="lead align-bottom" style="font-weight: bolder">作品展示</span>
-                <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-                <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+            <!-- 活动报名 -->
+            <div class="col-md-6 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav2.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">活动报名</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-unstyled">
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/hd.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">陪伴成长——妈妈的坚持，转移到孩子的坚持</h5>
+                              <p class="mb-0">亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
+                              <a href="#" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/hd.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">陪伴成长——妈妈的坚持，转移到孩子的坚持</h5>
+                              <p class="mb-0">亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
+                              <a href="#" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                          <li class="media mb-4 position-relative">
+                            <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/hd.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                            <div class="media-body">
+                              <h5 class="mt-0" style="color: #fd8562;">陪伴成长——妈妈的坚持，转移到孩子的坚持</h5>
+                              <p class="mb-0">亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
+                              <a href="#" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col bg-info"> <div style="height: 20rem;"></div></div>
-        </div>
-
-        <!-- 相关产品 -->
-        <div class="row pt-5">
-            <div class="col">
-                <img src="{{ url_for('static', filename='img/nav4.gif') }}" width="60" height="60">
-                <span class="lead align-bottom" style="font-weight: bolder">相关产品</span>
-                <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-                <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+            <!-- 作品展示 -->
+            <div class="col-12 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav3.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">作品展示</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"> <div style="height: 20rem;"></div></div>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col bg-info"> <div style="height: 20rem;"></div></div>
+            <!-- 相关产品 -->
+            <div class="col-12 pt-5">
+                <div class="row">
+                    <div class="col">
+                        <img src="{{ url_for('static', filename='img/nav4.gif') }}" width="60" height="60">
+                        <span class="lead align-bottom" style="font-weight: bolder">相关产品</span>
+                        <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        <hr class="mt-2" style="height: 0.1rem; background: #fd8562;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"> <div style="height: 20rem;"></div></div>
+                </div>
+            </div>
         </div>
     </div>
 
