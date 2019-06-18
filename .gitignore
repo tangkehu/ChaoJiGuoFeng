@@ -1,6 +1,8 @@
 # MyProfile
 .idea/
 logs/
+app/static/video/
+app/static/product/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

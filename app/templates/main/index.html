@@ -4,7 +4,7 @@
 
     <!-- 主页LOGO -->
     <div class="container py-2">
-        <img src="{{ url_for('static', filename='logo.gif') }}" width="40rem" height="40rem"><span class="h4 align-middle">超级国风</span>
+        <img src="{{ url_for('static', filename='logo.gif') }}" width="40rem" height="40rem"><span class="h4 align-middle font-weight-bold">超级国风</span>
     </div>
 
     <!-- 主页主图 -->
@@ -12,7 +12,7 @@
         <div class="container text-center py-5">
             <div class="m-2 px-2 py-5" style="background: rgba(255,255,255,0.4); color: #303b4a">
                 <img src="{{ url_for('static', filename='logo.gif') }}" width="120rem" height="120rem">
-                <h1 class="display-3" style="font-weight: bolder;">超级国风</h1>
+                <h1 class="display-3 font-weight-bolder">超级国风</h1>
                 <p class="h3">青少年经典诵读全媒体平台</p>
                 <hr class="my-4 rounded-pill border-0" style="width: 3rem; height: 0.2rem; background: #fd8562">
                 <p class="lead">海光老师经典诵读会，倡亲子共读、诵国学典籍、传孔孟之道、承华夏文明、浸山水之间、品书香之韵、养浩然正气。</p>
@@ -23,7 +23,7 @@
     <!-- 主页导航 -->
     <div class="shadow-sm">
     <div class="container py-5">
-        <div class="row">
+        <div class="row p-0 m-0 no-gutters">
             <div class="col">
                 <div class="row justify-content-center">
                     <a class="text-decoration-none text-white" href="#">
@@ -86,7 +86,7 @@
                 <div class="row">
                     <div class="col">
                         <img src="{{ url_for('static', filename='img/nav1.gif') }}" width="60" height="60">
-                        <span class="lead align-bottom" style="font-weight: bolder">最新动态</span>
+                        <span class="lead align-bottom font-weight-bolder">最新动态</span>
                         <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
@@ -130,7 +130,7 @@
                 <div class="row">
                     <div class="col">
                         <img src="{{ url_for('static', filename='img/nav2.gif') }}" width="60" height="60">
-                        <span class="lead align-bottom" style="font-weight: bolder">活动报名</span>
+                        <span class="lead align-bottom font-weight-bolder">活动报名</span>
                         <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
@@ -174,7 +174,7 @@
                 <div class="row">
                     <div class="col">
                         <img src="{{ url_for('static', filename='img/nav3.gif') }}" width="60" height="60">
-                        <span class="lead align-bottom" style="font-weight: bolder">作品展示</span>
+                        <span class="lead align-bottom font-weight-bolder">作品展示</span>
                         <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
@@ -182,7 +182,30 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col"> <div style="height: 20rem;"></div></div>
+                    <div class="col-md-6 col-xl-4 mb-4">
+                        <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-4 mb-4">
+                        <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-4 mb-4">
+                        <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-4 mb-4">
+                        <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -191,7 +214,7 @@
                 <div class="row">
                     <div class="col">
                         <img src="{{ url_for('static', filename='img/nav4.gif') }}" width="60" height="60">
-                        <span class="lead align-bottom" style="font-weight: bolder">相关产品</span>
+                        <span class="lead align-bottom font-weight-bolder">相关产品</span>
                         <a class="text-decoration-none text-muted float-right mt-4 pt-3" href="#">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
@@ -199,7 +222,42 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col"> <div style="height: 20rem;"></div></div>
+                    <div class="col-6 col-md-4 col-xl-3 mb-4 shadow-sm">
+                        <div class="w-100" style="height: 0; padding-bottom: 100%; background: url('{{ url_for('static', filename='product/cp.png') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                        <p class="text-truncate mb-0">经典论语著作，全本，诵读经典，提高诵读能力，提高国风能力</p>
+                        <p class="d-flex justify-content-between">
+                            <span class="text-danger lead font-weight-bolder">&yen; 99.9</span>
+                            <span class="pt-1">
+                                <a href="#" class="text-reset stretched-link">
+                                    购买 <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-6 col-md-4 col-xl-3 mb-4 shadow-sm">
+                        <div class="w-100" style="height: 0; padding-bottom: 100%; background: url('{{ url_for('static', filename='product/cp.png') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                        <p class="text-truncate mb-0">经典论语著作，全本，诵读经典，提高诵读能力，提高国风能力</p>
+                        <p class="d-flex justify-content-between">
+                            <span class="text-danger lead font-weight-bolder">&yen; 99.9</span>
+                            <span class="pt-1">
+                                <a href="#" class="text-reset stretched-link">
+                                    购买 <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-6 col-md-4 col-xl-3 mb-4 shadow-sm">
+                        <div class="w-100" style="height: 0; padding-bottom: 100%; background: url('{{ url_for('static', filename='product/cp.png') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                        <p class="text-truncate mb-0">经典论语著作，全本，诵读经典，提高诵读能力，提高国风能力</p>
+                        <p class="d-flex justify-content-between">
+                            <span class="text-danger lead font-weight-bolder">&yen; 99.9</span>
+                            <span class="pt-1">
+                                <a href="#" class="text-reset stretched-link">
+                                    购买 <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,13 +266,13 @@
     <!-- 主页底部 -->
     <div style="height: 15rem; background: url('{{ url_for('static', filename='bg-img.png') }}') no-repeat; background-size: cover; background-position: bottom; color: #303b4a">
         <div class="container h-100">
-            <div class="row h-100 align-items-center no-gutters">
-                <div class="col">
-                    <img src="{{ url_for('static', filename='logo.gif') }}" width="100rem" height="100rem">
-                    <span class="h1 align-middle pr-2" style="font-weight: bolder; border-right: 0.2rem solid #303b4a;">超级国风</span>
-                    <span class="d-inline-block align-middle ml-2 pt-1">
+            <div class="row h-100 align-items-center">
+                <div class="col m-0 p-0">
+                    <img src="{{ url_for('static', filename='logo.gif') }}" width="80rem" height="80rem">
+                    <span class="h2 align-middle pr-1" style="font-weight: bolder; border-right: 0.2rem solid #303b4a;">超级国风</span>
+                    <span class="d-inline-block align-middle ml-1 pt-1 small">
                         Copyright &copy; 超级国风<br>
-                        <a class="text-decoration-none" style="color: #303b4a" href="#">蜀ICP备05006454号</a>
+                        <a class="text-reset" href="#">蜀ICP备05006454号</a>
                     </span>
                 </div>
             </div>
