@@ -26,7 +26,7 @@
         <div class="row p-0 m-0 no-gutters" style="color: #fd8562">
             <div class="col text-center">
                 <img src="{{ url_for('static', filename='img/nav1.gif') }}" width="60" height="60" class="rounded-circle" style="background: #fd8562">
-                <p><a href="#" class="text-reset small stretched-link">最新动态</a></p>
+                <p><a href="{{ url_for('.news') }}" class="text-reset small stretched-link">最新动态</a></p>
             </div>
             <div class="col text-center">
                 <img src="{{ url_for('static', filename='img/nav2.gif') }}" width="60" height="60" class="rounded-circle" style="background: #fd8562">
@@ -234,19 +234,6 @@
     </div>
 
     <!-- 主页底部 -->
-    <div style="height: 15rem; background: url('{{ url_for('static', filename='bg-img.png') }}') no-repeat; background-size: cover; background-position: bottom; color: #303b4a">
-        <div class="container h-100">
-            <div class="row h-100 align-items-center">
-                <div class="col m-0 p-0">
-                    <img src="{{ url_for('static', filename='logo.gif') }}" width="80rem" height="80rem">
-                    <span class="h2 align-middle pr-1" style="font-weight: bolder; border-right: 0.2rem solid #303b4a;">超级国风</span>
-                    <span class="d-inline-block align-middle ml-1 pt-1 small">
-                        Copyright &copy; 超级国风<br>
-                        <a class="text-reset" href="#">蜀ICP备05006454号</a>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'main/_footer.html' %}
 
 {% endblock %}
