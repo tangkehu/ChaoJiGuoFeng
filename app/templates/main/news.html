@@ -2,6 +2,35 @@
 
 {% block header_title %}最新动态{% endblock %}
 
-{#{% block content %}#}
-{##}
-{#{% endblock %}#}
+{% block content %}
+    <div class="row mt-4">
+        <div class="col">
+            <ul class="list-unstyled">
+              <li class="media mb-4 position-relative">
+                <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                <div class="media-body">
+                  <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                  <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                  <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                </div>
+              </li>
+              <li class="media mb-4 position-relative">
+                <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                <div class="media-body">
+                  <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                  <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                  <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                </div>
+              </li>
+              <li class="media mb-4 position-relative">
+                <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ url_for('static', filename='img/dt.jpg') }}') no-repeat; background-size: cover; background-position: center;"></div>
+                <div class="media-body">
+                  <h5 class="mt-0" style="color: #fd8562;">武侯祠旁读《蜀相》，这一次诵读如此美妙</h5>
+                  <p class="mb-0">不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。</p>
+                  <a href="#" class="stretched-link text-secondary small">更多 <i class="fas fa-angle-double-right"></i> </a>
+                </div>
+              </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
