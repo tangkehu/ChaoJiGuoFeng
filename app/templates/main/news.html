@@ -33,4 +33,28 @@
             </ul>
         </div>
     </div>
+
+    <div class="row justify-content-center py-3">
+        <button class="btn btn-outline-secondary" id="load-more">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+            查看更多 <i class="fas fa-angle-double-down"></i>
+        </button>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            let url_init = '';
+            $('#load-more').click(function () {
+                $.ajax({
+                    url: url_init,
+                    type: 'get',
+                    beforeSend: function() {},
+                    success: function (data) {
+                        $('.list-unstyled').append(data.content);
+                        url_init = data.next_url;
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

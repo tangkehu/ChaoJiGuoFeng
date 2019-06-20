@@ -1,5 +1,5 @@
 
-from flask import render_template
+from flask import render_template, jsonify, url_for
 
 from . import main_bp
 
@@ -12,6 +12,13 @@ def index():
 @main_bp.route('/news')
 def news():
     return render_template('main/news.html')
+
+
+@main_bp.route('/news_content/<int:page>')
+def news_content(page):
+    content_list = ''
+    return jsonify({'content': render_template('main/news_content.html', content_list=content_list),
+                    'next_url': url_for('.news_content', page=page+1)})
 
 
 @main_bp.route('/activities')
