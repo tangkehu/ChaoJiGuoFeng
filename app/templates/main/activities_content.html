@@ -1,0 +1,11 @@
+
+{% for item in content_list %}
+  <li class="media mb-4 position-relative">
+    <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ item.img }}') no-repeat; background-size: cover; background-position: center;"></div>
+    <div class="media-body">
+      <h5 class="mt-0" style="color: #fd8562;">{{ item.title }}</h5>
+      <p class="mb-0">{{ item.content }}</p>
+      <a href="#" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+    </div>
+  </li>
+{% endfor %}
