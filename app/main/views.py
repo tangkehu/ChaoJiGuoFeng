@@ -1,5 +1,4 @@
 
-import time
 from flask import render_template, jsonify, url_for
 
 from . import main_bp
@@ -17,7 +16,6 @@ def news():
 
 @main_bp.route('/news_content/<int:page>')
 def news_content(page):
-    time.sleep(1)
     content_list = []
     for item in range(4):
         content_list.append({'img': url_for('static', filename='img/dt.jpg'),
@@ -40,7 +38,6 @@ def activities():
 
 @main_bp.route('/activities_content/<int:page>')
 def activities_content(page):
-    time.sleep(1)
     content_list = []
     for item in range(4):
         content_list.append({'img': url_for('static', filename='img/hd.jpg'),
@@ -63,9 +60,8 @@ def works():
 
 @main_bp.route('/works_content/<int:page>')
 def works_content(page):
-    time.sleep(1)
     content_list = []
-    for item in range(6):
+    for item in range(2):
         content_list.append({'title': '国风作品展示-女生版VLOG展示',
                              'video': url_for('static', filename='video/zp.mp4')})
     return jsonify({'content': render_template('main/works_content.html', content_list=content_list),
@@ -79,7 +75,6 @@ def products():
 
 @main_bp.route('/products_content/<int:page>')
 def products_content(page):
-    time.sleep(1)
     content_list = []
     for item in range(8):
         content_list.append({'img': url_for('static', filename='product/cp.png'),
