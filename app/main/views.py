@@ -84,9 +84,15 @@ def products_content(page):
     for item in range(8):
         content_list.append({'img': url_for('static', filename='product/cp.png'),
                              'name': '经典论语著作，全本，诵读经典，提高诵读能力，提高国风能力',
-                             'price': 99.9})
+                             'price': 99.9,
+                             'info': url_for('.products_info', pid=0)})
     return jsonify({'content': render_template('main/products_content.html', content_list=content_list),
                     'next_url': url_for('.products_content', page=page+1) if page < 5 else ''})
+
+
+@main_bp.route('/products_info/<int:pid>')
+def products_info(pid):
+    return render_template('main/products_info.html')
 
 
 @main_bp.route('/about')
