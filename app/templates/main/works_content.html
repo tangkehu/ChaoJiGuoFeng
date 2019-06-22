@@ -1,0 +1,9 @@
+
+{% for item in content_list %}
+    <div class="col-md-6 col-xl-4 mb-4">
+        <p class="mb-1 text-truncate font-weight-bold">{{ item.title }}</p>
+        <div class="embed-responsive embed-responsive-16by9">
+            <video class="embed-responsive-item" width="100%" controls><source src="{{ item.video }}"></video>
+        </div>
+    </div>
+{% endfor %}

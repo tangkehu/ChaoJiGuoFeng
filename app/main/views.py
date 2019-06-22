@@ -45,9 +45,28 @@ def works():
     return render_template('main/works.html')
 
 
+@main_bp.route('/works_content/<int:page>')
+def works_content(page):
+    time.sleep(1)
+    content_list = [{'title': '国风作品展示-女生版VLOG展示',
+                     'video': url_for('static', filename='video/zp.mp4')}]
+    return jsonify({'content': render_template('main/works_content.html', content_list=content_list),
+                    'next_url': url_for('.works_content', page=page+1) if page < 5 else ''})
+
+
 @main_bp.route('/products')
 def products():
     return render_template('main/products.html')
+
+
+@main_bp.route('/products_content/<int:page>')
+def products_content(page):
+    time.sleep(1)
+    content_list = [{'img': url_for('static', filename='product/cp.png'),
+                     'name': '经典论语著作，全本，诵读经典，提高诵读能力，提高国风能力',
+                     'price': 99.9}]
+    return jsonify({'content': render_template('main/products_content.html', content_list=content_list),
+                    'next_url': url_for('.products_content', page=page+1) if page < 5 else ''})
 
 
 @main_bp.route('/about')

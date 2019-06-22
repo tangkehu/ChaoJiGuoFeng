@@ -3,30 +3,8 @@
 {% block header_title %}作品展示{% endblock %}
 
 {% block content %}
-    <div class="row pt-4">
-        <div class="col-md-6 col-xl-4 mb-4">
-            <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
-            <div class="embed-responsive embed-responsive-16by9">
-                <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4 mb-4">
-            <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
-            <div class="embed-responsive embed-responsive-16by9">
-                <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4 mb-4">
-            <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
-            <div class="embed-responsive embed-responsive-16by9">
-                <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
-            </div>
-        </div>
-        <div class="col-md-6 col-xl-4 mb-4">
-            <p class="mb-1 text-truncate font-weight-bold">国风作品展示-女生版VLOG展示</p>
-            <div class="embed-responsive embed-responsive-16by9">
-                <video class="embed-responsive-item" width="100%" controls><source src="{{ url_for('static', filename='video/zp.mp4') }}"></video>
-            </div>
-        </div>
-    </div>
+    <div class="row pt-4 works-content"></div>
+
+    {% from 'main/_macro.html' import load_more %}
+    {{ load_more(url_for('.works_content', page=0), '.works-content') }}
 {% endblock %}
