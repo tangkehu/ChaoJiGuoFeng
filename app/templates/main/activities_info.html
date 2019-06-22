@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="pb-3 border-warning border-bottom">
+        {% include 'main/_header.html' %}
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col col-md-10 col-xl-8" style="min-height: 20rem;">
+                <h3 class="font-weight-bold">陪伴成长——妈妈的坚持，转移到孩子的坚持</h3>
+                <p class="text-muted">2019-06-18 17:00:00</p>
+                <hr>
+                <p>亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
+
+                <form method="post">
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>联系方式</label>
+                        <input class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>备注</label>
+                        <input class="form-control" type="text">
+                    </div>
+                    <button type="submit" class="btn btn-secondary">提交报名</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
