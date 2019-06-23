@@ -26,7 +26,7 @@
                 $.ajax({
                     url: url_init,
                     type: 'get',
-                    beforeSend: () => {$('.spinner-border').show(); $(this).attr('disabled', true);},
+                    beforeSend: function(){$('.spinner-border').show(); $(this).attr('disabled', true);},
                     success: function (data) {
                         $tag.append(data.content);
                         if (data.next_url) {

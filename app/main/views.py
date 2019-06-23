@@ -1,5 +1,5 @@
 
-from flask import render_template, jsonify, url_for
+from flask import render_template, jsonify, url_for, redirect, request, flash
 
 from . import main_bp
 
@@ -48,8 +48,11 @@ def activities_content(page):
                     'next_url': url_for('.activities_content', page=page+1) if page < 5 else ''})
 
 
-@main_bp.route('/activities_info/<int:aid>')
+@main_bp.route('/activities_info/<int:aid>', methods=['GET', 'POST'])
 def activities_info(aid):
+    if request.method == 'POST':
+        flash('活动报名成功。')
+        return redirect(url_for('.index'))
     return render_template('main/activities_info.html')
 
 
@@ -85,8 +88,11 @@ def products_content(page):
                     'next_url': url_for('.products_content', page=page+1) if page < 5 else ''})
 
 
-@main_bp.route('/products_info/<int:pid>')
+@main_bp.route('/products_info/<int:pid>', methods=['GET', 'POST'])
 def products_info(pid):
+    if request.method == 'POST':
+        flash('商品下单成功。')
+        return redirect(url_for('.index'))
     return render_template('main/products_info.html')
 
 

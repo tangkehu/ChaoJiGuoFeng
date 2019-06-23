@@ -2,6 +2,27 @@
 
 {% block body %}
 
+    <!-- Flash消息 -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">消息</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 主页LOGO -->
     <div class="container py-2">
         <img src="{{ url_for('static', filename='logo.gif') }}" width="40rem" height="40rem"><span class="h4 align-middle font-weight-bold">超级国风</span>
@@ -129,7 +150,7 @@
 {% block javascript %}
     <script type="text/javascript">
         $(function () {
-            let setStatus = () => {  // 记录页面状态
+            let setStatus = function () {  // 记录页面状态
                 $('a').on('click', function () {
                     window.sessionStorage.main_index_content = $('#content').html();
                     window.sessionStorage.main_index_scroll = $(window).scrollTop();
@@ -150,10 +171,15 @@
                 window.sessionStorage.removeItem('main_index_flag');
                 setStatus();
             } else {
-                for (let item of basic_init) {
-                    $.get(item.url, (data) => {$(item.tag).append(data.content); setStatus();});
+                for (let num = 0; num < basic_init.length; num++) {
+                    let item = basic_init[num];
+                    $.get(item.url, function (data) {$(item.tag).append(data.content); setStatus();});
                 }
             }
+
+            {% for msg in get_flashed_messages() %}
+                $('#exampleModal').modal('show').find('.modal-body').html('{{ msg }}');
+            {% endfor %}
         })
     </script>
 {% endblock %}
