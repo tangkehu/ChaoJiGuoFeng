@@ -10,15 +10,25 @@
 
     <script type="text/javascript">
         $(function () {
-
             let url_init = '{{ url }}';
+            let $tag = $('{{ tag }}');
+
+            let setStatus = function () {
+                $('{{ tag }} a').click(function () {
+                    window.sessionStorage.main_second_content = $tag.html();
+                    window.sessionStorage.main_second_scroll = $(window).scrollTop();
+                    window.sessionStorage.main_second_url_init = url_init;
+                    window.sessionStorage.main_second_flag = true;
+                });
+            };
+
             $('#load-more').on('click', function () {
                 $.ajax({
                     url: url_init,
                     type: 'get',
                     beforeSend: () => {$('.spinner-border').show(); $(this).attr('disabled', true);},
                     success: function (data) {
-                        $('{{ tag }}').append(data.content);
+                        $tag.append(data.content);
                         if (data.next_url) {
                             url_init = data.next_url;
                             $('.spinner-border').hide();
@@ -26,9 +36,20 @@
                         } else {
                             $('#load-more').html('全部已加载');
                         }
+                        setStatus();
                     }
                 });
-            }).click();
+            });
+
+            if (window.sessionStorage.main_second_flag === 'true') {
+                $tag.html(window.sessionStorage.main_second_content);
+                $(window).scrollTop(parseInt(window.sessionStorage.main_second_scroll));
+                url_init = window.sessionStorage.main_second_url_init;
+                window.sessionStorage.removeItem('main_second_flag');
+                setStatus();
+            } else {
+                $('#load-more').click();
+            }
 
         });
     </script>
