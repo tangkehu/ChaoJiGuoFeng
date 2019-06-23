@@ -2,6 +2,14 @@
 
 {% block header_title %}最新动态{% endblock %}
 
-{#{% block content %}#}
-{##}
-{#{% endblock %}#}
+{% block content %}
+    <div class="row mt-4">
+        <div class="col col-md-10 col-xl-8" style="min-height: 20rem;">
+            <ul class="list-unstyled"></ul>
+        </div>
+    </div>
+
+    {% from 'main/_macro.html' import load_more %}
+    {{ load_more(url_for('.news_content', page=0), '.list-unstyled') }}
+
+{% endblock %}

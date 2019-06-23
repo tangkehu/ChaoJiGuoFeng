@@ -2,15 +2,15 @@
 
 {% block body %}
 
-    <div style="background: url('{{ url_for('static', filename='bg-img.png') }}') no-repeat; background-size: cover; background-position: center; height: 15rem; color: #303b4a">
+    <div style="background: url('{{ url_for('static', filename='bg-img.png') }}') no-repeat; background-size: cover; background-position: top; color: #303b4a">
         {% include "main/_header.html" %}
-        <div class="container h-75 d-flex align-items-center">
-            <h1 class="font-weight-bolder">{% block header_title %}{% endblock %}</h1>
+        <div class="container pt-5 mt-2 pb-5">
+            <h1 class="font-weight-bolder m-0">{% block header_title %}{% endblock %}</h1>
         </div>
     </div>
 
     <div class="container">
-        {% block content %}<div class="row" style="height: 30rem;"></div>{% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
     {% include 'main/_footer.html' %}

@@ -1,0 +1,15 @@
+{% extends 'main/basic.html' %}
+
+{% block header_title %}活动报名{% endblock %}
+
+{% block content %}
+    <div class="row pt-4" style="min-height: 20rem;">
+        <div class="col col-md-10 col-xl-8">
+            <ul class="list-unstyled"></ul>
+        </div>
+    </div>
+
+    {% from 'main/_macro.html' import load_more %}
+    {{ load_more(url_for('.activities_content', page=0), '.list-unstyled') }}
+
+{% endblock %}
