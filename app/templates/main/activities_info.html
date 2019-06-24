@@ -13,23 +13,44 @@
                 <hr>
                 <p>亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
 
-                <form method="post">
+                <form>
                     <div class="form-group">
                         <label>姓名</label>
-                        <input class="form-control" type="text" required>
+                        <input class="form-control" type="text" name="name" required>
                     </div>
                     <div class="form-group">
                         <label>联系方式</label>
-                        <input class="form-control" type="text" required>
+                        <input class="form-control" type="text" name="number" required>
                     </div>
                     <div class="form-group">
                         <label>备注</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" name="remark">
                     </div>
-                    <button type="submit" class="btn btn-warning">提交报名</button>
+                    <button class="btn btn-warning" type="button">提交报名</button>
                 </form>
             </div>
         </div>
-
     </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function () {
+            $('form button').click(function () {
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'post',
+                    data: $('form').serialize(),
+                    beforeSend: showLoading,
+                    success: function (data) {
+                        hideLoading(function () {
+                            showMsg(data, function () {
+                                if (history.length <= 1) {location.replace('/');} else {history.back();}
+                            });
+                        });
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}

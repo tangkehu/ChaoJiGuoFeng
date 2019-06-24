@@ -3,7 +3,6 @@
 
     <div class="row justify-content-center py-3">
         <button class="btn btn-outline-secondary" id="load-more">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
             查看更多 <i class="fas fa-angle-double-down"></i>
         </button>
     </div>
@@ -26,17 +25,13 @@
                 $.ajax({
                     url: url_init,
                     type: 'get',
-                    beforeSend: function(){$('.spinner-border').show(); $(this).attr('disabled', true);},
+                    beforeSend: showLoading,
                     success: function (data) {
                         $tag.append(data.content);
-                        if (data.next_url) {
-                            url_init = data.next_url;
-                            $('.spinner-border').hide();
-                            $('#load-more').removeAttr('disabled');
-                        } else {
-                            $('#load-more').html('全部已加载');
-                        }
+                        url_init = data.next_url;
+                        if (!url_init) {$('#load-more').html('全部已加载').attr('disabled', 'disabled');}
                         setStatus();
+                        hideLoading();
                     }
                 });
             });
@@ -46,6 +41,7 @@
                 $(window).scrollTop(parseInt(window.sessionStorage.main_second_scroll));
                 url_init = window.sessionStorage.main_second_url_init;
                 window.sessionStorage.removeItem('main_second_flag');
+                if (!url_init) {$('#load-more').html('全部已加载').attr('disabled', 'disabled');}
                 setStatus();
             } else {
                 $('#load-more').click();
