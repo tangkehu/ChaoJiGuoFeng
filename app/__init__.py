@@ -38,6 +38,8 @@ def create_app():
 
     from .main import main_bp
     app.register_blueprint(main_bp)
+    from .manage import manage_bp
+    app.register_blueprint(manage_bp, url_prefix='/manage')
 
     return app
 

@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <!-- Nucleo Icons -->
+  <link href="{{ url_for('static', filename='manage-style/nucleo-icons.css') }}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="{{ url_for('static', filename='manage-style/black-dashboard.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block body_tag %}class=""{% endblock %}
+
+{% block body %}
+  <div class="wrapper">
+    <div class="sidebar">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
+    -->
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li>
+            <a href="{{ url_for('.news') }}">
+              <i class="tim-icons icon-camera-18"></i>
+              <p style="font-size: 14px;">最近动态</p>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('.activities') }}">
+              <i class="tim-icons icon-calendar-60"></i>
+              <p style="font-size: 14px;">活动报名</p>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('.works') }}">
+              <i class="tim-icons icon-atom"></i>
+              <p style="font-size: 14px;">作品展示</p>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('.products') }}">
+              <i class="tim-icons icon-cart"></i>
+              <p style="font-size: 14px;">商品管理</p>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('.indent') }}">
+              <i class="tim-icons icon-notes"></i>
+              <p style="font-size: 14px;">订单管理</p>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('.about') }}">
+              <i class="tim-icons icon-badge"></i>
+              <p style="font-size: 14px;">关于我们</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+              <button type="button" class="navbar-toggler" style="margin-top: 20px">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <a class="navbar-brand" href="javascript:void(0)" style="font-size: 22px; margin-top: 20px;">超级国风</a>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+
+      <div class="content">
+        {% block page_content %}
+        {% endblock %}
+      </div>
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="copyright">
+            ©
+            <script>
+              document.write(new Date().getFullYear())
+            </script> 超级国风
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <div class="fixed-plugin">
+    <div class="dropdown show-dropdown">
+      <a href="#" data-toggle="dropdown">
+        <i class="fa fa-cog fa-2x"> </i>
+      </a>
+      <ul class="dropdown-menu">
+        <li class="header-title"> 颜色</li>
+        <li class="adjustments-line">
+          <a href="javascript:void(0)" class="switch-trigger background-color">
+            <div class="badge-colors text-center">
+              <span class="badge filter badge-primary active" data-color="primary"></span>
+              <span class="badge filter badge-info" data-color="blue"></span>
+              <span class="badge filter badge-success" data-color="green"></span>
+            </div>
+            <div class="clearfix"></div>
+          </a>
+        </li>
+        <li class="adjustments-line text-center color-change">
+          <span class="color-label">明亮模式</span>
+          <span class="badge light-badge mr-2"></span>
+          <span class="badge dark-badge ml-2"></span>
+          <span class="color-label">黑夜模式</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  <!--   Core JS Files   -->
+  <script src="{{ url_for('static', filename='manage-style/perfect-scrollbar.jquery.min.js') }}"></script>
+  <!--  Notifications Plugin    -->
+  <script src="{{ url_for('static', filename='manage-style/bootstrap-notify.js') }}"></script>
+  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{{ url_for('static', filename='manage-style/black-dashboard.min.js') }}"></script>
+  <script>
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+        $main_panel = $('.main-panel');
+
+        $('.fixed-plugin a').click(function(event) {
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .background-color span').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data', new_color);
+          }
+
+          if ($main_panel.length != 0) {
+            $main_panel.attr('data', new_color);
+          }
+        });
+
+
+        $('.light-badge').click(function() {
+          $('body').addClass('white-content');
+        });
+
+        $('.dark-badge').click(function() {
+          $('body').removeClass('white-content');
+        });
+      });
+    });
+  </script>
+{% endblock %}
