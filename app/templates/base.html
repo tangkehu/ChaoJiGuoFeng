@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 
     {% if BOOT_CDN %}
     <link href="{{ url_for('static', filename='bootstrap-4.3.1/bootstrap.min.css') }}" rel="stylesheet">
@@ -56,6 +56,25 @@
       </div>
     </div>
 
+    <!-- Confirm the deletion modal -->
+    <div class="modal fade" id="deletionModal" tabindex="-1" role="dialog" aria-labelledby="deletionModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deletionModalLabel">删除操作确认消息</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">请再次确认是否要删除这条内容！删除后无法恢复。</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     {% block body %}{% endblock %}
 
     <script type="text/javascript">
@@ -78,6 +97,13 @@
                     func();
                 });
             }, 500);
+        }
+        
+        function deletionConfirm(func = function () {}) {
+            $('#deletionModal').modal('show').find('.btn-danger').click(function () {
+                showLoading();
+                func();
+            })
         }
 
     </script>
