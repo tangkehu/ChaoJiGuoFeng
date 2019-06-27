@@ -57,20 +57,20 @@
       </div>
     </div>
 
-    <!-- Confirm the deletion modal -->
-    <div class="modal fade" id="deletionModal" tabindex="-1" role="dialog" aria-labelledby="deletionModalLabel" aria-hidden="true">
+    <!-- Confirm modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="deletionModalLabel">删除操作确认消息</h5>
+            <h5 class="modal-title" id="confirmModalLabel"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">请再次确认是否要删除这条内容！删除后无法恢复。</div>
+          <div class="modal-body"></div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal">删除</button>
           </div>
         </div>
       </div>
@@ -81,11 +81,9 @@
     <script type="text/javascript">
 
         function showMsg(msg, func = function () {}) {
-            $('#flashModal').modal('show').on('shown.bs.modal', function () {
+            $('#flashModal').on('show.bs.modal', function () {
                 $(this).find('.modal-body').html(msg);
-            }).on('hidden.bs.modal', function () {
-                func();
-            });
+            }).on('hidden.bs.modal', func).modal('show');
         }
 
         function showLoading() {
@@ -93,18 +91,29 @@
         }
 
         function hideLoading(func = function () {}) {
+            $('#loadingModal').on('hidden.bs.modal', func);
             setTimeout(function () {
-                $('#loadingModal').modal('hide').on('hidden.bs.modal', function () {
-                    func();
-                });
+                $('#loadingModal').modal('hide');
             }, 500);
         }
         
+        function confirmAction(title, body, btn_name, btn_func = function () {}) {
+            $('#confirmModal').on({
+                'show.bs.modal': function () {
+                    $(this).find('.modal-title').html(title);
+                    $(this).find('.modal-body').html(body);
+                    $(this).find('.modal-footer .btn-warning').html(btn_name).off('click').on('click', function () {
+                        showLoading(); btn_func();
+                    });
+                },
+                'hidden.bs.modal': function () {
+                    $(this).find('.modal-footer .btn-warning').off('click');
+                }
+            }).modal('show');
+        }
+
         function deletionConfirm(func = function () {}) {
-            $('#deletionModal').modal('show').find('.btn-danger').click(function () {
-                showLoading();
-                func();
-            })
+            confirmAction('删除操作确认消息', '请再次确认是否要删除这条内容！删除后无法恢复。', '删除', func)
         }
 
     </script>
