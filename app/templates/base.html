@@ -70,7 +70,7 @@
           <div class="modal-body"></div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-warning" data-dismiss="modal">删除</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal">确认</button>
           </div>
         </div>
       </div>
@@ -81,9 +81,8 @@
     <script type="text/javascript">
 
         function showMsg(msg, func = function () {}) {
-            $('#flashModal').on('show.bs.modal', function () {
-                $(this).find('.modal-body').html(msg);
-            }).on('hidden.bs.modal', func).modal('show');
+            $("#flashModal .modal-body").html(msg);
+            $("#flashModal").one('hidden.bs.modal', func).modal('show');
         }
 
         function showLoading() {
@@ -91,24 +90,18 @@
         }
 
         function hideLoading(func = function () {}) {
-            $('#loadingModal').on('hidden.bs.modal', func);
-            setTimeout(function () {
-                $('#loadingModal').modal('hide');
-            }, 500);
+            $('#loadingModal').one('hidden.bs.modal', func);
+            setTimeout(function () { $('#loadingModal').modal('hide'); }, 500);
         }
         
         function confirmAction(title, body, btn_name, btn_func = function () {}) {
-            $('#confirmModal').on({
-                'show.bs.modal': function () {
-                    $(this).find('.modal-title').html(title);
-                    $(this).find('.modal-body').html(body);
-                    $(this).find('.modal-footer .btn-warning').html(btn_name).off('click').on('click', function () {
-                        showLoading(); btn_func();
-                    });
-                },
-                'hidden.bs.modal': function () {
-                    $(this).find('.modal-footer .btn-warning').off('click');
-                }
+            $('#confirmModal .modal-title').html(title);
+            $('#confirmModal .modal-body').html(body);
+            $('#confirmModal .modal-footer .btn-warning').html(btn_name).one('click', function () {
+                showLoading(); btn_func();
+            });
+            $('#confirmModal').one('hidden.bs.modal', function () {
+                $('#confirmModal .modal-footer .btn-warning').off();  // 对于绑定的事件要移除再绑定，否则会事件叠加
             }).modal('show');
         }
 
