@@ -27,12 +27,12 @@ def create_app():
 
     @app.context_processor  # Flask的上下文处理器，向模板的上下文插入新变量（可以是值和函数）
     def inject_context():
-        def truncate(string, length):
+        def truncate_self(string, length):
             _str = str(string)
             if _str.__len__() >= int(length):
                 _str = _str[:int(length)] + '...'
             return _str
-        return dict(BOOT_CDN=app.config['BOOT_CDN'], truncate=truncate)
+        return dict(BOOT_CDN=app.config['BOOT_CDN'])
 
     @app.cli.command()  # Flask的命令行命令注册器，类似flask run
     def deploy():

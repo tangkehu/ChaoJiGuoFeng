@@ -1,0 +1,31 @@
+{% extends 'manage/basic.html' %}
+
+{% block page_name %}
+    <a href="javascript: if (history.length <= 1) {location.replace('manage/news');} else {history.back();}" class="text-decoration-none text-warning h6">
+        <i class="fas fa-arrow-left"></i> 返回
+    </a>
+{% endblock %}
+
+{% block page_content %}
+    <form>
+        <div class="form-group">
+            <label>标题</label>
+            <input type="text" name="title" class="form-control">
+            <label>摘要</label>
+            <input type="text" name="summary" class="form-control">
+            <label>内容</label>
+            <textarea name="content" id="editor" class="form-control"></textarea>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.2.0/classic/ckeditor.js"></script>
+    <script type="text/javascript">
+        ClassicEditor
+            .create(document.querySelector( '#editor' ))
+            .catch(function (error) {
+                console.error(error);
+            })
+    </script>
+{% endblock %}

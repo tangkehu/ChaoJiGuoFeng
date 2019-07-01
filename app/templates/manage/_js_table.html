@@ -1,0 +1,45 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('#dataTable').DataTable({
+          "lengthMenu": [
+              [8,15,30,-1],    // 具体的数量
+              [8,15,30,'所有'] // 文字描述
+          ],
+          "paging": true,    // 是否开启分页功能(默认开启)
+          'info': true,      // 是否显示分页的统计信息(默认开启)
+          "searching":true,  // 是否开启搜索功能(默认开启)
+          "ordering": true,  // 是否开启排序功能(默认开启)
+          // "order":[ [0,'asc'] ], // 设置默认排序的表格列[参数1是表格列的下标，从0开始]
+          "stateSave": true,      // 是否保存当前datatables的状态(刷新后当前保持状态)
+          "processing": true,     // 显示处理中的字样[数量多的时候提示用户在处理中](默认开启)
+          "serverSide": false,    // 是否开启服务器模式
+                                  // false时，会一次性查询所有的数据，dataTables帮我们完成分页等。
+                                  // true时，点击分页页码就会每次都到后台提取数据。
+          "language": //把文字变为中文
+              {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "&larr;",
+                    "sNext": "&rarr;",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+              }
+      });
+    });
+</script>

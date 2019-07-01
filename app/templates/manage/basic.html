@@ -111,7 +111,7 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">{{ page_name }}</h1>
+          <h1 class="h3 mb-4 text-gray-800">{% block page_name %}{{ page_name }}{% endblock %}</h1>
           {% block page_content %}{% endblock %}
 
         </div>
@@ -149,6 +149,10 @@
 
   <script type="text/javascript">
     $(function () {
+        if ($(window).width() < 768) {
+            $('.sidebar').addClass('toggled')
+        }
+
         $('#logoutConfirm').on('click', function () {
             confirmAction('登出确认消息', '请你再次确认是否要登出当前账号，登出后需重新登录。', '登出', function () {
                 hideLoading(function () {
