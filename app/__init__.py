@@ -44,6 +44,8 @@ def create_app():
     from .manage import manage_bp
     app.register_blueprint(manage_bp, url_prefix='/manage')
 
+    from . import models  # 导入数据模型，否则无法创建数据表
+
     return app
 
 
