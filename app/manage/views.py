@@ -1,6 +1,8 @@
 
-from flask import render_template
+import re
+from flask import render_template, request, redirect, url_for, jsonify
 
+from app.utils import random_filename, resize_img
 from . import manage_bp
 
 
@@ -43,8 +45,18 @@ def about():
     return render_template('manage/news.html')
 
 
-@manage_bp.route('/article')
-@manage_bp.route('/article/<int:tid>')
-@manage_bp.route('/article/<int:tid>/<int:aid>')
+@manage_bp.route('/article/<int:tid>', methods=['GET', 'POST'])
+@manage_bp.route('/article/<int:tid>/<int:aid>', methods=['GET', 'POST'])
 def article(tid=1, aid=0):
+    if request.method == 'POST':
+        print(re.findall(r'src="(.*?)"', request.form.to_dict().get('content')))
+        return redirect(url_for('.news') if tid == 1 else url_for('.activities'))
     return render_template('manage/article.html')
+
+
+@manage_bp.route('/article/upload', methods=['POST'])
+def article_upload():
+    article_file = request.files.get('upload')
+    filepath = 'app/static/article-img/'
+    filename = resize_img(filepath, random_filename(article_file.filename), 600, article_file, True)
+    return jsonify({'uploaded': True, 'url': url_for('static', filename='article-img/'+filename)})
