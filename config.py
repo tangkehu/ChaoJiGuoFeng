@@ -13,6 +13,9 @@ class Config:
     # 基础配置
     SECRET_KEY = os.getenv('SECRET_KEY', 'set your secret key')
 
+    # 文件存储配置
+    ARTICLE_PATH = os.path.join(os.path.dirname(__file__), 'app'+os.sep+'static'+os.sep+'article-img')
+
     # CDN配置
     BOOT_CDN = True  # 是否使用免费快速的boot cdn服务
 

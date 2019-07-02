@@ -1,5 +1,7 @@
 
+import os
 from datetime import datetime
+from flask import current_app
 from app import db
 
 
@@ -14,6 +16,39 @@ class Article(db.Model):
     type = db.Column(db.Integer)
 
     entry = db.relationship('Entry', backref='article', lazy='dynamic')
+
+    def update(self, a_type, **kwargs):
+        """  用于更新数据，必需文章类型a_type，可自定义cover封面图，否则默认文章第一张图。 """
+        import re
+        self.datetime = datetime.now()
+        self.title = kwargs['title'].strip() if kwargs.get('title') else self.title
+        self.summary = kwargs['summary'].strip() if kwargs.get('summary') else self.summary
+        self.content = kwargs['content'] if kwargs.get('content') else self.content
+        img_urls = re.findall(r'src="(.*?)"', self.content)
+        self.cover = kwargs['cover'] if kwargs.get('cover') else img_urls[0] if img_urls else self.cover
+        self.type = int(a_type)
+        db.session.add(self)
+        db.session.commit()
+
+    def alter_status(self):
+        self.status = False if self.status else True
+        db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        """ 删除时删除储存在本地的图片文件 """
+        import re
+        img_urls = re.finditer(r'src="static/article-img/(.*?)"', self.content)
+        try:
+            for item in img_urls:
+                os.remove(os.path.join(current_app.config['ARTICLE_PATH'], item))
+        except Exception as e:
+            current_app.logger.info(str(e))
+        for item in self.entry.all():
+            # 若存在活动报名表则删除活动报名
+            item.remove()
+        db.session.delete(self)
+        db.session.commit()
 
 
 class Video(db.Model):
@@ -42,6 +77,10 @@ class Entry(db.Model):
     contacts = db.Column(db.String(32))
     remarks = db.Column(db.String(128))
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'))
+
+    def remove(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 class Indent(db.Model):

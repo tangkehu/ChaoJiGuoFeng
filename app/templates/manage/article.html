@@ -12,15 +12,15 @@
             <form method="post">
                 <div class="form-group">
                     <label>标题</label>
-                    <input type="text" name="title" class="form-control" required>
+                    <input type="text" name="title" class="form-control" required {% if article %}value="{{ article.title }}" {% endif %}>
                 </div>
                 <div class="form-group">
                     <label>摘要</label>
-                    <input type="text" name="summary" class="form-control" required>
+                    <input type="text" name="summary" class="form-control" required {% if article %}value="{{ article.summary }}" {% endif %}>
                 </div>
                 <div class="form-group">
                     <label>内容</label>
-                    <textarea name="content" id="editor" class="form-control"></textarea>
+                    <textarea name="content" id="editor" class="form-control">{%- if article -%}{{ article.content | safe }}{%- endif -%}</textarea>
                 </div>
                 <button class="btn btn-warning" type="submit">保存</button>
             </form>

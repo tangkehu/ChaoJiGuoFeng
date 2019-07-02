@@ -55,25 +55,40 @@
 {% block javascript %}
     <script type="text/javascript">
         $(function () {
-            let $dataTable = $('#dataTable');
-            let dataTable = $dataTable.DataTable();
-            $dataTable.on('click', '.article-publish', function () {
-                let $target = $(this);
-                console.log($target.data('aid'));
-                showLoading();
-                hideLoading(function () {
-                    if ($target.hasClass('btn-info')) {
-                        $target.removeClass('btn-info').addClass('btn-secondary').html('取消');
-                    }else{
-                        $target.removeClass('btn-secondary').addClass('btn-info').html('发布');
-                    }
-                })
+            $('#dataTable').on('click', '.article-publish', function () {
+                $.ajax({
+                    url: '{{ url_for('.news') }}',
+                    type: 'post',
+                    data: {aid: $(this).data('aid')},
+                    beforeSend: showLoading,
+                    complete: function () {
+                        hideLoading(function () {
+                            window.location.reload();
+                        });
+                    },
+
+                });
             }).on('click', '.btn-danger', function () {
-                let $target = $(this);
-                console.log($target.data('aid'));
+                let aid = $(this).data('aid');
                 deletionConfirm(function () {
-                    dataTable.row($target.parents('tr')).remove().draw(false);
-                    hideLoading();
+                    $.ajax({
+                        url: '{{ url_for('.news') }}',
+                        type: 'delete',
+                        data: {aid: aid, test: 'ok'},
+                        beforeSend: showLoading,
+                        success: function () {
+                            hideLoading(function () {
+                                window.location.reload();
+                            });
+                        },
+                        error: function () {
+                            hideLoading(function () {
+                                showMsg('删除失败，请重试。', function () {
+                                    window.location.reload();
+                                })
+                            })
+                        }
+                    });
                 })
             })
         });
