@@ -12,7 +12,7 @@ class Article(db.Model):
     title = db.Column(db.String(64))
     summary = db.Column(db.String(128))
     content = db.Column(db.Text)
-    cover = db.Column(db.String(128))
+    cover = db.Column(db.String(128), default='/static/img/logo.gif')
     type = db.Column(db.Integer)
 
     entry = db.relationship('Entry', backref='article', lazy='dynamic')
@@ -38,7 +38,7 @@ class Article(db.Model):
     def remove(self):
         """ 删除时删除储存在本地的图片文件 """
         import re
-        img_urls = re.finditer(r'src="static/article-img/(.*?)"', self.content)
+        img_urls = re.findall(r'src="/static/article-img/(.*?)"', self.content)
         try:
             for item in img_urls:
                 os.remove(os.path.join(current_app.config['ARTICLE_PATH'], item))

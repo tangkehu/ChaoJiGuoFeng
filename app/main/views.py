@@ -1,6 +1,7 @@
 
 from flask import render_template, jsonify, url_for, request
 
+from app.models import Article, Video, Products
 from . import main_bp
 
 
@@ -16,19 +17,16 @@ def news():
 
 @main_bp.route('/news_content/<int:page>')
 def news_content(page):
-    content_list = []
-    for item in range(4):
-        content_list.append({'img': url_for('static', filename='img/dt.jpg'),
-                             'title': '武侯祠旁读《蜀相》，这一次诵读如此美妙',
-                             'info': url_for('.news_info', nid=0),
-                             'content': '不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。'})
-    return jsonify({'content': render_template('main/news_content.html', content_list=content_list),
-                    'next_url': url_for('.news_content', page=page+1) if page < 5 else ''})
+    pagination = Article.query.filter(Article.type == 1, Article.status == True).order_by(
+        Article.datetime.desc()).paginate(page, 5, False)
+    return jsonify({'content': render_template('main/news_content.html', content_list=list(pagination.items)),
+                    'next_url': url_for('.news_content', page=pagination.next_num) if pagination.has_next else ''})
 
 
 @main_bp.route('/news_info/<int:nid>')
 def news_info(nid):
-    return render_template('main/news_info.html')
+    news_obj = Article.query.get_or_404(int(nid))
+    return render_template('main/news_info.html', news_obj=news_obj)
 
 
 @main_bp.route('/activities')

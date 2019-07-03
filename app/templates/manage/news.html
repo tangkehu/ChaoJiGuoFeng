@@ -39,7 +39,7 @@
                             <button class="btn btn-sm btn-info article-publish" data-aid="{{ item.id }}">发布</button>
                             {% endif %}
                             <a href="{{ url_for('.article', tid=1, aid=item.id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> 编辑</a>
-                            <button class="btn btn-sm btn-danger" data-aid="{{ item.id }}"><i class="fas fa-trash"></i> 删除</button>
+                            <button class="btn btn-sm btn-danger article-delete" data-aid="{{ item.id }}"><i class="fas fa-trash"></i> 删除</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -66,15 +66,14 @@
                             window.location.reload();
                         });
                     },
-
                 });
-            }).on('click', '.btn-danger', function () {
+            }).on('click', '.article-delete', function () {
                 let aid = $(this).data('aid');
                 deletionConfirm(function () {
                     $.ajax({
                         url: '{{ url_for('.news') }}',
                         type: 'delete',
-                        data: {aid: aid, test: 'ok'},
+                        data: {aid: aid},
                         beforeSend: showLoading,
                         success: function () {
                             hideLoading(function () {

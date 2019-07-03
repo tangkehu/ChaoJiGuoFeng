@@ -11,15 +11,15 @@
         <div class="col col-md-10 col-xl-6">
             <form method="post">
                 <div class="form-group">
-                    <label>标题</label>
+                    <label>{% if tid == 1 %}新闻标题{% elif tid == 2 %}活动主题{% endif %}</label>
                     <input type="text" name="title" class="form-control" required {% if article %}value="{{ article.title }}" {% endif %}>
                 </div>
                 <div class="form-group">
-                    <label>摘要</label>
+                    <label>{% if tid == 1 %}新闻摘要{% elif tid == 2 %}活动概述{% endif %}</label>
                     <input type="text" name="summary" class="form-control" required {% if article %}value="{{ article.summary }}" {% endif %}>
                 </div>
                 <div class="form-group">
-                    <label>内容</label>
+                    <label>{% if tid == 1 %}新闻内容{% elif tid == 2 %}活动详情{% endif %}</label>
                     <textarea name="content" id="editor" class="form-control">{%- if article -%}{{ article.content | safe }}{%- endif -%}</textarea>
                 </div>
                 <button class="btn btn-warning" type="submit">保存</button>
