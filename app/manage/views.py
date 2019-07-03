@@ -2,7 +2,7 @@
 from flask import render_template, request, redirect, url_for, jsonify, current_app
 
 from app.utils import random_filename, resize_img
-from app.models import Article
+from app.models import Article, Entry
 from . import manage_bp
 
 
@@ -16,6 +16,31 @@ def news():
 def activities():
     activities_list = Article.query.filter_by(type=2).order_by(Article.datetime.desc()).all()
     return render_template('manage/activities.html', activities_list=activities_list, page_name='活动报名')
+
+
+@manage_bp.route('/entry/<int:aid>')
+def entry(aid):
+    activity_obj = Article.query.get_or_404(int(aid))
+    return render_template('manage/entry.html', activity_obj=activity_obj, Entry=Entry)
+
+
+@manage_bp.route('/entry/update/<int:aid>', methods=['GET', 'POST'])
+@manage_bp.route('/entry/update/<int:aid>/<int:eid>', methods=['GET', 'POST'])
+def entry_update(aid, eid=0):
+    entry_obj = Entry.query.get_or_404(int(eid)) if eid else None
+    if request.method == 'POST':
+        if entry_obj:
+            flg = entry_obj.update(aid, **request.form.to_dict())
+        else:
+            flg = Entry().update(aid, **request.form.to_dict())
+        return '报名信息提交成功' if flg else '报名信息重复，请重试。'
+    return render_template('manage/entry_update.html', entry_obj=entry_obj)
+
+
+@manage_bp.route('/entry/remove', methods=['POST'])
+def entry_remove():
+    Entry.query.get_or_404(int(request.form.get('eid'))).remove()
+    return 'success'
 
 
 @manage_bp.route('/works')
