@@ -45,22 +45,22 @@ def entry_remove():
 
 @manage_bp.route('/works')
 def works():
-    return render_template('manage/news.html')
+    return render_template('manage/works.html', page_name='作品展示')
 
 
 @manage_bp.route('/products')
 def products():
-    return render_template('manage/news.html')
+    return render_template('manage/products.html', page_name='产品管理')
 
 
 @manage_bp.route('/indent')
 def indent():
-    return render_template('manage/news.html')
+    return render_template('manage/indent.html', page_name='订单管理')
 
 
 @manage_bp.route('/about')
 def about():
-    return render_template('manage/news.html')
+    return render_template('manage/about.html', page_name='关于我们')
 
 
 # -------------------- 图文文章的相关处理方法 --------------------------
