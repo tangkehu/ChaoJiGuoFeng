@@ -12,8 +12,7 @@ if os.path.exists(env_path):
 class Config:
     # 基础配置
     SECRET_KEY = os.getenv('SECRET_KEY', 'set your secret key')
-
-    # 文件存储配置
+    PER_PAGE = 5
     ARTICLE_PATH = os.path.join(os.path.dirname(__file__), 'app'+os.sep+'static'+os.sep+'article-img')
 
     # CDN配置

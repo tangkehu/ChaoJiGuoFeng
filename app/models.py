@@ -78,6 +78,23 @@ class Entry(db.Model):
     remarks = db.Column(db.String(128))
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'))
 
+    def update(self, aid, **kwargs):
+        if kwargs.get('name') and kwargs.get('contacts') and Entry.query.filter(
+            Entry.id != self.id,
+            Entry.article_id == aid,
+            Entry.name == kwargs['name'].strip(),
+            Entry.contacts == kwargs['contacts'].strip()
+        ).first():
+            return False
+        self.datetime = datetime.now()
+        self.name = kwargs['name'].strip() if kwargs.get('name') else self.name
+        self.contacts = kwargs['contacts'].strip() if kwargs.get('contacts') else self.contacts
+        self.remarks = kwargs['remarks'].strip() if kwargs.get('remarks') else self.remarks
+        self.article = Article.query.get_or_404(int(aid))
+        db.session.add(self)
+        db.session.commit()
+        return True
+
     def remove(self):
         db.session.delete(self)
         db.session.commit()

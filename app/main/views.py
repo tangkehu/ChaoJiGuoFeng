@@ -1,7 +1,7 @@
 
-from flask import render_template, jsonify, url_for, request
+from flask import render_template, jsonify, url_for, request, current_app
 
-from app.models import Article, Video, Products
+from app.models import Article, Video, Products, Entry
 from . import main_bp
 
 
@@ -18,7 +18,7 @@ def news():
 @main_bp.route('/news_content/<int:page>')
 def news_content(page):
     pagination = Article.query.filter(Article.type == 1, Article.status == True).order_by(
-        Article.datetime.desc()).paginate(page, 5, False)
+        Article.datetime.desc()).paginate(page, current_app.config['PER_PAGE'], False)
     return jsonify({'content': render_template('main/news_content.html', content_list=list(pagination.items)),
                     'next_url': url_for('.news_content', page=pagination.next_num) if pagination.has_next else ''})
 
@@ -36,22 +36,18 @@ def activities():
 
 @main_bp.route('/activities_content/<int:page>')
 def activities_content(page):
-    content_list = []
-    for item in range(4):
-        content_list.append({'img': url_for('static', filename='img/hd.jpg'),
-                             'title': '陪伴成长——妈妈的坚持，转移到孩子的坚持',
-                             'info': url_for('.activities_info', aid=0),
-                             'content': '亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。'})
-    return jsonify({'content': render_template('main/activities_content.html', content_list=content_list),
-                    'next_url': url_for('.activities_content', page=page+1) if page < 5 else ''})
+    pagination = Article.query.filter(Article.type == 2, Article.status == True).order_by(
+        Article.datetime.desc()).paginate(page, current_app.config['PER_PAGE'], False)
+    return jsonify({'content': render_template('main/activities_content.html', content_list=list(pagination.items)),
+                    'next_url': url_for('.activities_content', page=pagination.next_num) if pagination.has_next else ''})
 
 
 @main_bp.route('/activities_info/<int:aid>', methods=['GET', 'POST'])
 def activities_info(aid):
+    activities_obj = Article.query.get_or_404(int(aid))
     if request.method == 'POST':
-        print(request.form.to_dict())
-        return '活动报名成功。'
-    return render_template('main/activities_info.html')
+        return '活动报名成功，请准时参加活动哟。' if Entry().update(aid, **request.form.to_dict()) else '你已报名成功，请勿重复报名。'
+    return render_template('main/activities_info.html', activities_obj=activities_obj)
 
 
 @main_bp.route('/works')
