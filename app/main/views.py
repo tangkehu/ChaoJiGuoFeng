@@ -1,6 +1,7 @@
 
-from flask import render_template, jsonify, url_for, request
+from flask import render_template, jsonify, url_for, request, current_app
 
+from app.models import Article, Video, Products, Entry
 from . import main_bp
 
 
@@ -16,19 +17,16 @@ def news():
 
 @main_bp.route('/news_content/<int:page>')
 def news_content(page):
-    content_list = []
-    for item in range(4):
-        content_list.append({'img': url_for('static', filename='img/dt.jpg'),
-                             'title': '武侯祠旁读《蜀相》，这一次诵读如此美妙',
-                             'info': url_for('.news_info', nid=0),
-                             'content': '不要以为孩子们静不下来，在精心制作的冥想音乐中，他们如此专心专注，甚至像个小菩萨，内心是安定的，缓缓的告别浮躁，找寻自我心底的宁静。'})
-    return jsonify({'content': render_template('main/news_content.html', content_list=content_list),
-                    'next_url': url_for('.news_content', page=page+1) if page < 5 else ''})
+    pagination = Article.query.filter(Article.type == 1, Article.status == True).order_by(
+        Article.datetime.desc()).paginate(page, current_app.config['PER_PAGE'], False)
+    return jsonify({'content': render_template('main/news_content.html', content_list=list(pagination.items)),
+                    'next_url': url_for('.news_content', page=pagination.next_num) if pagination.has_next else ''})
 
 
 @main_bp.route('/news_info/<int:nid>')
 def news_info(nid):
-    return render_template('main/news_info.html')
+    news_obj = Article.query.get_or_404(int(nid))
+    return render_template('main/news_info.html', news_obj=news_obj)
 
 
 @main_bp.route('/activities')
@@ -38,22 +36,18 @@ def activities():
 
 @main_bp.route('/activities_content/<int:page>')
 def activities_content(page):
-    content_list = []
-    for item in range(4):
-        content_list.append({'img': url_for('static', filename='img/hd.jpg'),
-                             'title': '陪伴成长——妈妈的坚持，转移到孩子的坚持',
-                             'info': url_for('.activities_info', aid=0),
-                             'content': '亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。'})
-    return jsonify({'content': render_template('main/activities_content.html', content_list=content_list),
-                    'next_url': url_for('.activities_content', page=page+1) if page < 5 else ''})
+    pagination = Article.query.filter(Article.type == 2, Article.status == True).order_by(
+        Article.datetime.desc()).paginate(page, current_app.config['PER_PAGE'], False)
+    return jsonify({'content': render_template('main/activities_content.html', content_list=list(pagination.items)),
+                    'next_url': url_for('.activities_content', page=pagination.next_num) if pagination.has_next else ''})
 
 
 @main_bp.route('/activities_info/<int:aid>', methods=['GET', 'POST'])
 def activities_info(aid):
+    activities_obj = Article.query.get_or_404(int(aid))
     if request.method == 'POST':
-        print(request.form.to_dict())
-        return '活动报名成功。'
-    return render_template('main/activities_info.html')
+        return '活动报名成功，请准时参加活动哟。' if Entry().update(aid, **request.form.to_dict()) else '你已报名成功，请勿重复报名。'
+    return render_template('main/activities_info.html', activities_obj=activities_obj)
 
 
 @main_bp.route('/works')
@@ -63,12 +57,9 @@ def works():
 
 @main_bp.route('/works_content/<int:page>')
 def works_content(page):
-    content_list = []
-    for item in range(2):
-        content_list.append({'title': '国风作品展示-女生版VLOG展示',
-                             'video': url_for('static', filename='video/zp.mp4')})
-    return jsonify({'content': render_template('main/works_content.html', content_list=content_list),
-                    'next_url': url_for('.works_content', page=page+1) if page < 5 else ''})
+    pagination = Video.query.filter(Video.status == True).order_by(Video.datetime.desc()).paginate(page, 3, False)
+    return jsonify({'content': render_template('main/works_content.html', content_list=list(pagination.items)),
+                    'next_url': url_for('.works_content', page=pagination.next_num) if pagination.has_next else ''})
 
 
 @main_bp.route('/products')
@@ -98,4 +89,5 @@ def products_info(pid):
 
 @main_bp.route('/about')
 def about():
-    return render_template('main/about.html')
+    about_obj = Article.query.filter_by(type=3).first()
+    return render_template('main/about.html', about_obj=about_obj)

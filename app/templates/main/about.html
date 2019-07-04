@@ -4,7 +4,12 @@
 
 {% block content %}
     <div class="row pt-4">
-        <div class="col col-md-10 col-xl-8">
+        <div class="col col-md-10">
+            {% if about_obj %}
+                {{ about_obj.content | replace('<img', '<img class="img-fluid"') | safe }}
+            {% else %}
+                <p>敬请期待...</p>
+            {% endif %}
             <p style="min-height: 20rem;"></p>
         </div>
     </div>

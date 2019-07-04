@@ -1,0 +1,58 @@
+{% extends 'manage/basic.html' %}
+
+{% block page_name %}
+    {{ super() }}
+    <button id="about-submit" class="btn btn-warning float-right"><i class="fas fa-plus"></i> 保存</button>
+{% endblock %}
+
+{% block page_content %}
+    <div id="toolbar-container"></div>
+    <div id="editor">
+        {%- if about_obj.content -%}{{ about_obj.content | safe }}{%- else -%}<p>请在这里开始书写关于我们的定制内容。</p>{%- endif -%}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', filename='ckeditor5-doc/ckeditor.js') }}"></script>
+    <script src="{{ url_for('static', filename='ckeditor5-doc/zh-cn.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            let newEditor;
+            DecoupledEditor
+                .create( document.querySelector( '#editor' ), {
+                    language: 'zh-cn',
+                    ckfinder: {
+                        uploadUrl: "{{ url_for('.article_upload') }}"
+                    }
+                } )
+                .then( function (editor) {
+                    const toolbarContainer = document.querySelector( '#toolbar-container' );
+                    toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+                    newEditor = editor
+                } )
+                .catch( function (error) {
+                    console.error( error );
+                } );
+            $('#about-submit').on('click', function () {
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'post',
+                    data: {content: newEditor.getData()},
+                    beforeSend: showLoading,
+                    success: function () {
+                        hideLoading(function () {
+                            showMsg('保存成功。', function () {
+                                window.location.reload();
+                            })
+                        })
+                    },
+                    error: function () {
+                        hideLoading(function () {
+                            showMsg('保存失败，请重试。')
+                        })
+                    }
+                })
+            })
+        });
+    </script>
+{% endblock %}

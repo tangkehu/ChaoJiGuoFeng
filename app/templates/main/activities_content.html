@@ -1,11 +1,14 @@
 
 {% for item in content_list %}
   <li class="media mb-4 position-relative">
-    <div class="bg-info w-25 mr-3" style="padding-bottom: 25%; background: url('{{ item.img }}') no-repeat; background-size: cover; background-position: center;"></div>
+    <div class="w-25 mr-3" style="padding-bottom: 25%; background: url('{{ item.cover }}') no-repeat; background-size: cover; background-position: center;"></div>
     <div class="media-body">
       <h5 class="mt-0" style="color: #fd8562;">{{ item.title }}</h5>
-      <p class="mb-0">{{ item.content }}</p>
-      <a href="{{ item.info }}" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
+      <small class="text-muted">{{ item.datetime }}</small>
+      <p class="mb-0">{{ item.summary }}</p>
+      <a href="{{ url_for('.activities_info', aid=item.id) }}" class="stretched-link text-secondary small">我要报名 <i class="fas fa-angle-double-right"></i> </a>
     </div>
   </li>
+{% else %}
+  <li>暂时什么也没有...</li>
 {% endfor %}

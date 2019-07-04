@@ -1,0 +1,40 @@
+{% extends 'manage/basic.html' %}
+
+{% block page_name %}
+    <a href="javascript: if (history.length <= 1) {location.replace('manage/news');} else {history.back();}" class="text-decoration-none text-warning h6">
+        <i class="fas fa-arrow-left"></i> 返回
+    </a>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col col-md-10 col-xl-6">
+            <form method="post">
+                <div class="form-group">
+                    <label>{% if tid == 1 %}新闻标题{% elif tid == 2 %}活动主题{% endif %}</label>
+                    <input type="text" name="title" class="form-control" required {% if article %}value="{{ article.title }}" {% endif %}>
+                </div>
+                <div class="form-group">
+                    <label>{% if tid == 1 %}新闻摘要{% elif tid == 2 %}活动概述{% endif %}</label>
+                    <input type="text" name="summary" class="form-control" required {% if article %}value="{{ article.summary }}" {% endif %}>
+                </div>
+                <div class="form-group">
+                    <label>{% if tid == 1 %}新闻内容{% elif tid == 2 %}活动详情{% endif %}</label>
+                    <textarea name="content" id="editor" class="form-control">{%- if article -%}{{ article.content | safe }}{%- endif -%}</textarea>
+                </div>
+                <button class="btn btn-warning" type="submit">保存</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', filename='ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+        ClassicEditor.create(document.querySelector( '#editor' ),{
+            ckfinder: {
+                uploadUrl: "{{ url_for('.article_upload') }}"
+            }
+        });
+    </script>
+{% endblock %}

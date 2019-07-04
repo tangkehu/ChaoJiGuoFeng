@@ -1,0 +1,64 @@
+{% extends 'manage/basic.html' %}
+
+{% block page_name %}
+    <a href="javascript: document.referrer === '' ? location.href='manage/activities' : history.back();" class="text-decoration-none text-warning h6">
+        <i class="fas fa-arrow-left"></i> 返回
+    </a>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col col-md-10 col-xl-6">
+            <form id="entry-form">
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input class="form-control" type="text" name="name" {% if entry_obj %}value="{{ entry_obj.name }}" {% endif %}>
+                </div>
+                <div class="form-group">
+                    <label>联系方式</label>
+                    <input class="form-control" type="text" name="contacts" {% if entry_obj %}value="{{ entry_obj.contacts }}" {% endif %}>
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <input class="form-control" type="text" name="remarks" {% if entry_obj %}value="{{ entry_obj.remarks }}" {% endif %}>
+                </div>
+                <button class="btn btn-warning" type="button">提交报名信息</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function () {
+            $('#entry-form button').on('click', function () {
+                if (!$('#entry-form input[name="name"]').val() || !$('#entry-form input[name="contacts"]').val()) {
+                    showMsg('请填写姓名和联系方式。');
+                    return
+                }
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'post',
+                    data: $('#entry-form').serialize(),
+                    beforeSend: showLoading,
+                    success: function (data) {
+                        hideLoading(function () {
+                            showMsg(data, function () {
+                                if (history.length <= 1) {
+                                    location.replace('{{ url_for('.activities') }}');
+                                } else {
+                                    window.location = document.referrer;
+                                }
+                            });
+                        });
+                    },
+                    error: function () {
+                        hideLoading(function () {
+                            showMsg('报名信息提交失败，请重试。')
+                        })
+                    }
+                });
+            });
+        })
+    </script>
+{% endblock %}

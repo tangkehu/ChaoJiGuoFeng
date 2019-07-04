@@ -27,9 +27,12 @@ def create_app():
 
     @app.context_processor  # Flask的上下文处理器，向模板的上下文插入新变量（可以是值和函数）
     def inject_context():
-        def test_def(num):
-            return num+1
-        return dict(BOOT_CDN=app.config['BOOT_CDN'], test_def=test_def)
+        def truncate_self(string, length):
+            _str = str(string)
+            if _str.__len__() >= int(length):
+                _str = _str[:int(length)] + '...'
+            return _str
+        return dict(BOOT_CDN=app.config['BOOT_CDN'])
 
     @app.cli.command()  # Flask的命令行命令注册器，类似flask run
     def deploy():
@@ -38,6 +41,10 @@ def create_app():
 
     from .main import main_bp
     app.register_blueprint(main_bp)
+    from .manage import manage_bp
+    app.register_blueprint(manage_bp, url_prefix='/manage')
+
+    from . import models  # 导入数据模型，否则无法创建数据表
 
     return app
 

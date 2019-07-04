@@ -7,12 +7,14 @@
 
     <div class="container py-5">
         <div class="row">
-            <div class="col col-md-10 col-xl-8">
-                <h3 class="font-weight-bold">陪伴成长——妈妈的坚持，转移到孩子的坚持</h3>
-                <p class="text-muted">2019-06-18 17:00:00</p>
+            <div class="col-12 col-md-10 col-xl-8 pb-5">
+                <h3 class="font-weight-bold">{{ activities_obj.title }}</h3>
+                <p class="text-muted">{{ activities_obj.datetime }}</p>
                 <hr>
-                <p>亲子陪读有门道——挖掘中华经典的力量系列活动将于6月15日迎来第八期——陪伴成长——妈妈的坚持，转移到孩子的坚持，海光老师将与大家分享影响孩子坚持的几大因素。</p>
-
+                {{ activities_obj.content | replace('<img', '<img class="img-fluid"') | safe }}
+            </div>
+            <div class="col-12 col-md-10 col-xl-4">
+                <h3 class="font-weight-bold">我要报名</h3>
                 <form>
                     <div class="form-group">
                         <label>姓名</label>
@@ -20,11 +22,11 @@
                     </div>
                     <div class="form-group">
                         <label>联系方式</label>
-                        <input class="form-control" type="text" name="number" required>
+                        <input class="form-control" type="text" name="contacts" required>
                     </div>
                     <div class="form-group">
                         <label>备注</label>
-                        <input class="form-control" type="text" name="remark">
+                        <input class="form-control" type="text" name="remarks">
                     </div>
                     <button class="btn btn-warning" type="button">提交报名</button>
                 </form>
@@ -37,6 +39,10 @@
     <script type="text/javascript">
         $(function () {
             $('form button').click(function () {
+                if (!$('input[name="name"]').val() || !$('input[name="contacts"]').val()) {
+                    showMsg('请填写姓名和联系方式。');
+                    return
+                }
                 $.ajax({
                     url: window.location.pathname,
                     type: 'post',

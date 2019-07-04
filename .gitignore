@@ -1,6 +1,7 @@
 # MyProfile
 .idea/
 logs/
+app/static/article-img/
 app/static/video/
 app/static/product/
 

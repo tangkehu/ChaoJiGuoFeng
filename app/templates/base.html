@@ -3,8 +3,9 @@
   <head {% block head_tag %}{% endblock %}>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 
     {% if BOOT_CDN %}
     <link href="{{ url_for('static', filename='bootstrap-4.3.1/bootstrap.min.css') }}" rel="stylesheet">
@@ -14,6 +15,10 @@
 {#    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>#}
 {#    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>#}
     <link href="https://cdn.bootcss.com/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/datatables/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.bootcss.com/datatables/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.bootcss.com/dropzone/5.5.1/min/dropzone.min.js"></script>
     {% else %}
     {% endif %}
 
@@ -56,16 +61,32 @@
       </div>
     </div>
 
+    <!-- Confirm modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmModalLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     {% block body %}{% endblock %}
 
     <script type="text/javascript">
 
         function showMsg(msg, func = function () {}) {
-            $('#flashModal').modal('show').on('shown.bs.modal', function () {
-                $(this).find('.modal-body').html(msg);
-            }).on('hidden.bs.modal', function () {
-                func();
-            });
+            $("#flashModal .modal-body").html(msg);
+            $("#flashModal").one('hidden.bs.modal', func).modal('show');
         }
 
         function showLoading() {
@@ -73,11 +94,23 @@
         }
 
         function hideLoading(func = function () {}) {
-            setTimeout(function () {
-                $('#loadingModal').modal('hide').on('hidden.bs.modal', function () {
-                    func();
-                });
-            }, 500);
+            $('#loadingModal').one('hidden.bs.modal', func);
+            setTimeout(function () { $('#loadingModal').modal('hide'); }, 500);
+        }
+        
+        function confirmAction(title, body, btn_name, btn_func = function () {}) {
+            $('#confirmModal .modal-title').html(title);
+            $('#confirmModal .modal-body').html(body);
+            $('#confirmModal .modal-footer .btn-warning').html(btn_name).one('click', function () {
+                showLoading(); btn_func();
+            });
+            $('#confirmModal').one('hidden.bs.modal', function () {
+                $('#confirmModal .modal-footer .btn-warning').off();  // 对于绑定的事件要移除再绑定，否则会事件叠加
+            }).modal('show');
+        }
+
+        function deletionConfirm(func = function () {}) {
+            confirmAction('删除操作确认消息', '请再次确认是否要删除这条内容！删除后无法恢复。', '删除', func)
         }
 
     </script>
