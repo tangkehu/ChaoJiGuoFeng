@@ -58,6 +58,26 @@ class Video(db.Model):
     title = db.Column(db.String(64))
     url = db.Column(db.String(128))
 
+    def update(self, url, title):
+        self.datetime = datetime.now()
+        self.title = title.strip()
+        self.url = url
+        db.session.add(self)
+        db.session.commit()
+
+    def alter_status(self):
+        self.status = False if self.status else True
+        db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        try:
+            os.remove(os.path.join(current_app.config['VIDEO_PATH'], self.url.split('/')[-1]))
+        except Exception as e:
+            current_app.logger.info(str(e))
+        db.session.delete(self)
+        db.session.commit()
+
 
 class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)

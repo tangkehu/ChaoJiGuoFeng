@@ -57,12 +57,9 @@ def works():
 
 @main_bp.route('/works_content/<int:page>')
 def works_content(page):
-    content_list = []
-    for item in range(2):
-        content_list.append({'title': '国风作品展示-女生版VLOG展示',
-                             'video': url_for('static', filename='video/zp.mp4')})
-    return jsonify({'content': render_template('main/works_content.html', content_list=content_list),
-                    'next_url': url_for('.works_content', page=page+1) if page < 5 else ''})
+    pagination = Video.query.filter(Video.status == True).order_by(Video.datetime.desc()).paginate(page, 3, False)
+    return jsonify({'content': render_template('main/works_content.html', content_list=list(pagination.items)),
+                    'next_url': url_for('.works_content', page=pagination.next_num) if pagination.has_next else ''})
 
 
 @main_bp.route('/products')

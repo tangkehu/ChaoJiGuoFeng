@@ -1,8 +1,8 @@
 
-from flask import render_template, request, redirect, url_for, jsonify, current_app
+from flask import render_template, request, redirect, url_for, jsonify, current_app, abort
 
 from app.utils import random_filename, resize_img
-from app.models import Article, Entry
+from app.models import Article, Entry, Video
 from . import manage_bp
 
 
@@ -20,6 +20,7 @@ def activities():
 
 @manage_bp.route('/entry/<int:aid>')
 def entry(aid):
+    """ 报名管理页面 """
     activity_obj = Article.query.get_or_404(int(aid))
     return render_template('manage/entry.html', activity_obj=activity_obj, Entry=Entry)
 
@@ -27,6 +28,7 @@ def entry(aid):
 @manage_bp.route('/entry/update/<int:aid>', methods=['GET', 'POST'])
 @manage_bp.route('/entry/update/<int:aid>/<int:eid>', methods=['GET', 'POST'])
 def entry_update(aid, eid=0):
+    """ 报名信息新增和修改 """
     entry_obj = Entry.query.get_or_404(int(eid)) if eid else None
     if request.method == 'POST':
         if entry_obj:
@@ -39,13 +41,59 @@ def entry_update(aid, eid=0):
 
 @manage_bp.route('/entry/remove', methods=['POST'])
 def entry_remove():
+    """ 报名信息移除 """
     Entry.query.get_or_404(int(request.form.get('eid'))).remove()
     return 'success'
 
 
-@manage_bp.route('/works')
+@manage_bp.route('/works', methods=['GET', 'POST', 'DELETE'])
 def works():
-    return render_template('manage/works.html', page_name='作品展示')
+    """ 作品展示管理页面，作品发布，作品删除 """
+    if request.method == 'POST':
+        # 作品发布
+        Video.query.get_or_404(int(request.form.get('vid'))).alter_status()
+        return 'success'
+    if request.method == 'DELETE':
+        # 作品删除
+        Video.query.get_or_404(int(request.form.get('vid'))).remove()
+        return 'success'
+    video_list = Video.query.order_by(Video.datetime.desc()).all()
+    return render_template('manage/works.html', page_name='作品展示', video_list=video_list)
+
+
+@manage_bp.route('/works/update/<string:url>', methods=['GET', 'POST'])
+@manage_bp.route('/works/update/<string:url>/<int:vid>', methods=['GET', 'POST'])
+def works_update(url, vid=None):
+    """ 作品新增和修改 """
+    url = url.replace('%2F', '/')
+    video_obj = Video.query.get_or_404(int(vid)) if vid else None
+    if request.method == 'POST':
+        if video_obj:
+            video_obj.update(url, request.form.get('title'))
+        else:
+            Video().update(url, request.form.get('title'))
+        return redirect(url_for('.works'))
+    return render_template('manage/works_update.html', video_obj=video_obj, url=url)
+
+
+@manage_bp.route('/video', methods=['POST', 'DELETE'])
+def video():
+    """ 视频的上传和删除 """
+    import os
+    if request.method == 'POST':
+        # 视频上传
+        new_video = request.files.get('file')
+        new_filename = random_filename(new_video.filename)
+        new_video.save(os.path.join(current_app.config['VIDEO_PATH'], new_filename))
+        return url_for('.works_update', url=url_for('static', filename='video/'+new_filename).replace('/', '%2F'))
+    if request.method == 'DELETE':
+        # 视频删除
+        try:
+            os.remove(os.path.join(current_app.config['VIDEO_PATH'], request.form.get('url').split('/')[-1]))
+        except Exception as e:
+            current_app.logger.info(str(e))
+        return 'success'
+    abort(404)
 
 
 @manage_bp.route('/products')

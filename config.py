@@ -14,6 +14,7 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'set your secret key')
     PER_PAGE = 5
     ARTICLE_PATH = os.path.join(os.path.dirname(__file__), 'app'+os.sep+'static'+os.sep+'article-img')
+    VIDEO_PATH = os.path.join(os.path.dirname(__file__), 'app'+os.sep+'static'+os.sep+'video')
 
     # CDN配置
     BOOT_CDN = True  # 是否使用免费快速的boot cdn服务

@@ -1,0 +1,51 @@
+{% extends 'manage/basic.html' %}
+
+{% block page_name %}
+    <a href="javascript:void(0)" class="text-decoration-none text-warning h6 history-back">
+        <i class="fas fa-arrow-left"></i> 返回
+    </a>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-12 col-md-6 col-xl-4 mb-3">
+            <div class="embed-responsive embed-responsive-16by9">
+                <video class="embed-responsive-item" width="100%" controls><source src="{{ url }}"></video>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-4">
+            <form method="post">
+                <div class="form-group">
+                    <label>视频标题</label>
+                    <input type="text" name="title" class="form-control" required {% if video_obj %}value="{{ video_obj.title }}" {% endif %}>
+                </div>
+                <button class="btn btn-warning" type="submit">提交</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function () {
+            $('.history-back').on('click', function () {
+                {% if video_obj %}
+                    window.history.back();
+                {% else %}
+                    confirmAction('确认消息', '本次上传的视频还未保存，返回后视频需重新上传。', '继续返回', function () {
+                        $.ajax({
+                            url: '{{ url_for('.video') }}',
+                            type: 'delete',
+                            data: {url: '{{ url }}'},
+                            complete: function () {
+                                hideLoading(function () {
+                                    window.history.back();
+                                })
+                            }
+                        });
+                    });
+                {% endif %}
+            })
+        });
+    </script>
+{% endblock %}
