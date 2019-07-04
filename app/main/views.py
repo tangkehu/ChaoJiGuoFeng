@@ -89,4 +89,5 @@ def products_info(pid):
 
 @main_bp.route('/about')
 def about():
-    return render_template('main/about.html')
+    about_obj = Article.query.filter_by(type=3).first()
+    return render_template('main/about.html', about_obj=about_obj)

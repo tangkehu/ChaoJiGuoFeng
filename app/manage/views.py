@@ -106,9 +106,18 @@ def indent():
     return render_template('manage/indent.html', page_name='订单管理')
 
 
-@manage_bp.route('/about')
+@manage_bp.route('/about', methods=['GET', 'POST'])
 def about():
-    return render_template('manage/about.html', page_name='关于我们')
+    about_obj = Article.query.filter_by(type=3).first()
+    if not about_obj:
+        Article().update(3)
+        about_obj = Article.query.filter_by(type=3).first()
+
+    if request.method == 'POST':
+        about_obj.update(3, **request.form.to_dict())
+        return 'success'
+
+    return render_template('manage/about.html', page_name='关于我们', about_obj=about_obj)
 
 
 # -------------------- 图文文章的相关处理方法 --------------------------

@@ -11,7 +11,7 @@ class Article(db.Model):
     status = db.Column(db.Boolean, default=False)
     title = db.Column(db.String(64))
     summary = db.Column(db.String(128))
-    content = db.Column(db.Text)
+    content = db.Column(db.Text, default='')
     cover = db.Column(db.String(128), default='/static/img/logo.gif')
     type = db.Column(db.Integer)
 
@@ -24,7 +24,7 @@ class Article(db.Model):
         self.title = kwargs['title'].strip() if kwargs.get('title') else self.title
         self.summary = kwargs['summary'].strip() if kwargs.get('summary') else self.summary
         self.content = kwargs['content'] if kwargs.get('content') else self.content
-        img_urls = re.findall(r'src="(.*?)"', self.content)
+        img_urls = re.findall(r'src="(.*?)"', self.content if self.content else '')
         self.cover = kwargs['cover'] if kwargs.get('cover') else img_urls[0] if img_urls else self.cover
         self.type = int(a_type)
         db.session.add(self)
