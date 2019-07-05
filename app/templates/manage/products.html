@@ -22,6 +22,7 @@
                 <table class="table table-hover table-bordered" id="dataTable">
                     <thead>
                     <tr>
+                        <th class="text-nowrap">编号</th>
                         <th>商品名</th>
                         <th>价格</th>
                         <th>时间</th>
@@ -30,6 +31,7 @@
                     </thead>
                     <tfoot>
                     <tr>
+                        <th>编号</th>
                         <th>商品名</th>
                         <th>价格</th>
                         <th>时间</th>
@@ -39,6 +41,7 @@
                     <tbody>
                     {% for item in product_list %}
                     <tr>
+                        <td class="text-nowrap">{{ item.id }}</td>
                         <td class="text-nowrap">{{ item.title | truncate(15) }}</td>
                         <td class="text-nowrap">{{ item.price }}</td>
                         <td class="text-nowrap">{{ item.datetime }}</td>
@@ -48,6 +51,7 @@
                             {% else %}
                             <button class="btn btn-sm btn-info product-publish" data-pid="{{ item.id }}">发布</button>
                             {% endif %}
+                            <a href="{{ url_for('.indent_update', pid=item.id) }}" class="btn btn-sm btn-success">订单</a>
                             <a href="{{ url_for('.products_update', url=item.url | replace('/', '%2F'), pid=item.id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> 编辑</a>
                             <button class="btn btn-sm btn-danger product-remove" data-pid="{{ item.id }}"><i class="fas fa-trash"></i> 删除</button>
                         </td>
@@ -89,7 +93,7 @@
                 $.ajax({
                     url: '{{ url_for('.products') }}',
                     type: 'post',
-                    data: {vid: $(this).data('pid')},
+                    data: {pid: $(this).data('pid')},
                     beforeSend: showLoading,
                     complete: function () {
                         hideLoading(function () {

@@ -109,6 +109,18 @@ class Products(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def _delete(self, del_indent=False):
+        """ 彻底删除商品，选择是否删除商品关联的订单 """
+        try:
+            os.remove(os.path.join(current_app.config['PRODUCT_PATH'], self.url.split('/')[-1]))
+        except Exception as e:
+            current_app.logger.info(str(e))
+        if del_indent:
+            for item in self.indent.all():
+                item.remove()
+        db.session.delete(self)
+        db.session.commit()
+
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -161,6 +173,20 @@ class Indent(db.Model):
         self.address = kwargs['address'].strip()
         self.remarks = kwargs['remarks'].strip()
         self.count = kwargs['count']
-        self.total = Products.query.get_or_404(int(pid)).price * self.count
+        self.total = Products.query.get_or_404(int(pid)).price * int(self.count)
         db.session.add(self)
+        db.session.commit()
+
+    def alter_pay_status(self):
+        self.pay_status = False if self.pay_status else True
+        db.session.add(self)
+        db.session.commit()
+
+    def alter_send_status(self):
+        self.send_status = False if self.send_status else True
+        db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        db.session.delete(self)
         db.session.commit()

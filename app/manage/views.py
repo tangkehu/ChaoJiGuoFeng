@@ -2,7 +2,7 @@
 from flask import render_template, request, redirect, url_for, jsonify, current_app, abort
 
 from app.utils import random_filename, resize_img
-from app.models import Article, Entry, Video, Products
+from app.models import Article, Entry, Video, Products, Indent
 from . import manage_bp
 
 
@@ -146,9 +146,37 @@ def products_img():
     abort(404)
 
 
-@manage_bp.route('/indent')
+@manage_bp.route('/indent', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def indent():
-    return render_template('manage/indent.html', page_name='订单管理')
+    """ 订单列表，收款，发货，删除 """
+    if request.method == 'POST':
+        # 订单收款状态
+        Indent.query.get_or_404(int(request.form.get('iid', 0))).alter_pay_status()
+        return 'success'
+    if request.method == 'PUT':
+        # 订单发货状态
+        Indent.query.get_or_404(int(request.form.get('iid', 0))).alter_send_status()
+        return 'success'
+    if request.method == 'DELETE':
+        # 订单删除
+        Indent.query.get_or_404(int(request.form.get('iid', 0))).remove()
+        return 'success'
+    indent_list = Indent.query.order_by(Indent.datetime.desc()).all()
+    return render_template('manage/indent.html', page_name='订单管理', indent_list=indent_list)
+
+
+@manage_bp.route('/indent/update/<int:pid>', methods=['GET', 'POST'])
+@manage_bp.route('/indent/update/<int:pid>/<int:iid>', methods=['GET', 'POST'])
+def indent_update(pid, iid=None):
+    indent_obj = Indent.query.get_or_404(int(iid)) if iid else None
+    product_obj = Products.query.get_or_404(int(pid))
+    if request.method == 'POST':
+        if indent_obj:
+            indent_obj.update(pid, **request.form.to_dict())
+        else:
+            Indent().update(pid, **request.form.to_dict())
+        return redirect(url_for('.indent'))
+    return render_template('manage/indent_update.html', indent_obj=indent_obj, product_obj=product_obj)
 
 
 @manage_bp.route('/about', methods=['GET', 'POST'])
