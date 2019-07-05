@@ -44,13 +44,13 @@
                         <td class="text-nowrap">{{ item.datetime }}</td>
                         <td class="text-nowrap">
                             {% if item.pay_status %}
-                            <button class="btn btn-sm btn-secondary indent-pay" data-iid="{{ item.id }}">取消</button>
+                            <button class="btn btn-sm btn-secondary indent-pay" data-iid="{{ item.id }}">已收</button>
                             {% else %}
                             <button class="btn btn-sm btn-info indent-pay" data-iid="{{ item.id }}">收款</button>
                             {% endif %}
 
                             {% if item.send_status %}
-                            <button class="btn btn-sm btn-secondary indent-send" data-iid="{{ item.id }}">取消</button>
+                            <button class="btn btn-sm btn-secondary indent-send" data-iid="{{ item.id }}">已发</button>
                             {% else %}
                             <button class="btn btn-sm btn-success indent-send" data-iid="{{ item.id }}">发货</button>
                             {% endif %}
