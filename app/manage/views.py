@@ -2,7 +2,7 @@
 from flask import render_template, request, redirect, url_for, jsonify, current_app, abort
 
 from app.utils import random_filename, resize_img
-from app.models import Article, Entry, Video
+from app.models import Article, Entry, Video, Products, Indent
 from . import manage_bp
 
 
@@ -42,7 +42,7 @@ def entry_update(aid, eid=0):
 @manage_bp.route('/entry/remove', methods=['POST'])
 def entry_remove():
     """ 报名信息移除 """
-    Entry.query.get_or_404(int(request.form.get('eid'))).remove()
+    Entry.query.get_or_404(int(request.form.get('eid', 0))).remove()
     return 'success'
 
 
@@ -51,11 +51,11 @@ def works():
     """ 作品展示管理页面，作品发布，作品删除 """
     if request.method == 'POST':
         # 作品发布
-        Video.query.get_or_404(int(request.form.get('vid'))).alter_status()
+        Video.query.get_or_404(int(request.form.get('vid', 0))).alter_status()
         return 'success'
     if request.method == 'DELETE':
         # 作品删除
-        Video.query.get_or_404(int(request.form.get('vid'))).remove()
+        Video.query.get_or_404(int(request.form.get('vid', 0))).remove()
         return 'success'
     video_list = Video.query.order_by(Video.datetime.desc()).all()
     return render_template('manage/works.html', page_name='作品展示', video_list=video_list)
@@ -96,14 +96,87 @@ def video():
     abort(404)
 
 
-@manage_bp.route('/products')
+@manage_bp.route('/products', methods=['GET', 'POST', 'DELETE'])
 def products():
-    return render_template('manage/products.html', page_name='产品管理')
+    """ 商品列表，发布，删除 """
+    if request.method == 'POST':
+        # 商品发布
+        Products.query.get_or_404(int(request.form.get('pid', 0))).alter_status()
+        return 'success'
+    if request.method == 'DELETE':
+        # 商品软删除
+        Products.query.get_or_404(int(request.form.get('pid', 0))).remove()
+        return 'success'
+    product_list = Products.query.filter(Products.is_remove == False).order_by(Products.datetime.desc()).all()
+    return render_template('manage/products.html', page_name='产品管理', product_list=product_list)
 
 
-@manage_bp.route('/indent')
+@manage_bp.route('/products/update/<string:url>', methods=['GET', 'POST'])
+@manage_bp.route('/products/update/<string:url>/<int:pid>', methods=['GET', 'POST'])
+def products_update(url, pid=None):
+    """ 商品新增和修改 """
+    url = url.replace('%2F', '/')
+    products_obj = Products.query.get_or_404(int(pid)) if pid else None
+    if request.method == 'POST':
+        if products_obj:
+            products_obj.update(url, request.form.get('title'), request.form.get('price'))
+        else:
+            Products().update(url, request.form.get('title'), request.form.get('price'))
+        return redirect(url_for('.products'))
+    return render_template('manage/products_update.html', products_obj=products_obj, url=url)
+
+
+@manage_bp.route('/products/img', methods=['POST', 'DELETE'])
+def products_img():
+    """ 商品图的上传和删除 """
+    import os
+    if request.method == 'POST':
+        # 商品图上传
+        new_file = request.files.get('file')
+        new_filename = resize_img(current_app.config['PRODUCT_PATH'], random_filename(new_file.filename),
+                                  600, new_file, True)
+        return url_for('.products_update', url=url_for('static', filename='product/'+new_filename).replace('/', '%2F'))
+    if request.method == 'DELETE':
+        # 视频删除
+        try:
+            os.remove(os.path.join(current_app.config['PRODUCT_PATH'], request.form.get('url').split('/')[-1]))
+        except Exception as e:
+            current_app.logger.info(str(e))
+        return 'success'
+    abort(404)
+
+
+@manage_bp.route('/indent', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def indent():
-    return render_template('manage/indent.html', page_name='订单管理')
+    """ 订单列表，收款，发货，删除 """
+    if request.method == 'POST':
+        # 订单收款状态
+        Indent.query.get_or_404(int(request.form.get('iid', 0))).alter_pay_status()
+        return 'success'
+    if request.method == 'PUT':
+        # 订单发货状态
+        Indent.query.get_or_404(int(request.form.get('iid', 0))).alter_send_status()
+        return 'success'
+    if request.method == 'DELETE':
+        # 订单删除
+        Indent.query.get_or_404(int(request.form.get('iid', 0))).remove()
+        return 'success'
+    indent_list = Indent.query.order_by(Indent.datetime.desc()).all()
+    return render_template('manage/indent.html', page_name='订单管理', indent_list=indent_list)
+
+
+@manage_bp.route('/indent/update/<int:pid>', methods=['GET', 'POST'])
+@manage_bp.route('/indent/update/<int:pid>/<int:iid>', methods=['GET', 'POST'])
+def indent_update(pid, iid=None):
+    indent_obj = Indent.query.get_or_404(int(iid)) if iid else None
+    product_obj = Products.query.get_or_404(int(pid))
+    if request.method == 'POST':
+        if indent_obj:
+            indent_obj.update(pid, **request.form.to_dict())
+        else:
+            Indent().update(pid, **request.form.to_dict())
+        return redirect(url_for('.indent'))
+    return render_template('manage/indent_update.html', indent_obj=indent_obj, product_obj=product_obj)
 
 
 @manage_bp.route('/about', methods=['GET', 'POST'])

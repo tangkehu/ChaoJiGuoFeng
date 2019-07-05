@@ -86,8 +86,40 @@ class Products(db.Model):
     title = db.Column(db.String(64))
     price = db.Column(db.Float)
     url = db.Column(db.String(128))
+    is_remove = db.Column(db.Boolean, default=False)
 
     indent = db.relationship('Indent', backref='products', lazy='dynamic')
+
+    def update(self, url, title, price):
+        self.datetime = datetime.now()
+        self.url = url
+        self.title = title.strip()
+        self.price = price
+        db.session.add(self)
+        db.session.commit()
+
+    def alter_status(self):
+        self.status = False if self.status else True
+        db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        """ 商品实行软删除，考虑到订单原因 """
+        self.is_remove = True
+        db.session.add(self)
+        db.session.commit()
+
+    def _delete(self, del_indent=False):
+        """ 彻底删除商品，选择是否删除商品关联的订单 """
+        try:
+            os.remove(os.path.join(current_app.config['PRODUCT_PATH'], self.url.split('/')[-1]))
+        except Exception as e:
+            current_app.logger.info(str(e))
+        if del_indent:
+            for item in self.indent.all():
+                item.remove()
+        db.session.delete(self)
+        db.session.commit()
 
 
 class Entry(db.Model):
@@ -132,3 +164,29 @@ class Indent(db.Model):
     pay_status = db.Column(db.Boolean, default=False)
     send_status = db.Column(db.Boolean, default=False)
     products_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+
+    def update(self, pid, **kwargs):
+        self.datetime = datetime.now()
+        self.products = Products.query.get_or_404(int(pid))
+        self.name = kwargs['name'].strip()
+        self.contacts = kwargs['contacts'].strip()
+        self.address = kwargs['address'].strip()
+        self.remarks = kwargs['remarks'].strip()
+        self.count = kwargs['count']
+        self.total = Products.query.get_or_404(int(pid)).price * int(self.count)
+        db.session.add(self)
+        db.session.commit()
+
+    def alter_pay_status(self):
+        self.pay_status = False if self.pay_status else True
+        db.session.add(self)
+        db.session.commit()
+
+    def alter_send_status(self):
+        self.send_status = False if self.send_status else True
+        db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        db.session.delete(self)
+        db.session.commit()

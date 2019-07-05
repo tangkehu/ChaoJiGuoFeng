@@ -129,7 +129,7 @@
     <script type="text/javascript">
         $(function () {
             let setStatus = function () {  // 记录页面状态
-                $('a').on('click', function () {
+                $('#content a').on('click', function () {
                     window.sessionStorage.main_index_content = $('#content').html();
                     window.sessionStorage.main_index_scroll = $(window).scrollTop();
                     window.sessionStorage.main_index_flag = true

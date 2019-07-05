@@ -1,7 +1,7 @@
 
 from flask import render_template, jsonify, url_for, request, current_app
 
-from app.models import Article, Video, Products, Entry
+from app.models import Article, Video, Products, Entry, Indent
 from . import main_bp
 
 
@@ -69,22 +69,19 @@ def products():
 
 @main_bp.route('/products_content/<int:page>')
 def products_content(page):
-    content_list = []
-    for item in range(8):
-        content_list.append({'img': url_for('static', filename='product/cp.png'),
-                             'name': '经典论语著作，全本，诵读经典，提高诵读能力，提高国风能力',
-                             'price': 99.9,
-                             'info': url_for('.products_info', pid=0)})
-    return jsonify({'content': render_template('main/products_content.html', content_list=content_list),
-                    'next_url': url_for('.products_content', page=page+1) if page < 5 else ''})
+    pagination = Products.query.filter(Products.status == True, Products.is_remove == False).order_by(
+        Products.datetime.desc()).paginate(page, 8, False)
+    return jsonify({'content': render_template('main/products_content.html', content_list=list(pagination.items)),
+                    'next_url': url_for('.products_content', page=pagination.next_num) if pagination.has_next else ''})
 
 
 @main_bp.route('/products_info/<int:pid>', methods=['GET', 'POST'])
 def products_info(pid):
+    products_obj = Products.query.get_or_404(int(pid))
     if request.method == 'POST':
-        print(request.form.to_dict())
-        return '商品下单成功。'
-    return render_template('main/products_info.html')
+        Indent().update(pid, **request.form.to_dict())
+        return '商品下单成功，请耐心等待我们与您联系。'
+    return render_template('main/products_info.html', products_obj=products_obj)
 
 
 @main_bp.route('/about')
