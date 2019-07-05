@@ -22,7 +22,7 @@
                     </div>
                     <div class="form-group">
                         <label>联系方式</label>
-                        <input class="form-control" type="text" name="contacts" required>
+                        <input class="form-control" type="text" name="contacts" required placeholder="输入微信同号手机以方便联系">
                     </div>
                     <div class="form-group">
                         <label>备注</label>
@@ -51,9 +51,17 @@
                     success: function (data) {
                         hideLoading(function () {
                             showMsg(data, function () {
-                                if (history.length <= 1) {location.replace('/');} else {history.back();}
+                                window.document.referrer === '' ? location.href = '/' : history.back();
+                                // if (history.length <= 1) {location.replace('/');} else {history.back();}
                             });
                         });
+                    },
+                    error: function () {
+                        hideLoading(function () {
+                            showMsg('报名失败，请稍后重试。', function () {
+                                window.document.referrer === '' ? location.href = '/' : history.back();
+                            })
+                        })
                     }
                 });
             });

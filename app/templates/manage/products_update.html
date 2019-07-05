@@ -1,0 +1,54 @@
+{% extends 'manage/basic.html' %}
+
+{% block page_name %}
+    <a href="javascript:void(0)" class="text-decoration-none text-warning h6 history-back">
+        <i class="fas fa-arrow-left"></i> 返回
+    </a>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-12 col-md-6 col-xl-4 pb-5">
+            <div class="w-100" style="padding-bottom: 100%; background: url('{{ url }}') no-repeat;
+                    background-position: center; background-size: cover;"></div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-4">
+            <form method="post">
+                <div class="form-group">
+                    <label>商品名</label>
+                    <input type="text" name="title" class="form-control" required {% if products_obj %}value="{{ products_obj.title }}" {% endif %}>
+                </div>
+                <div class="form-group">
+                    <label>商品价格</label>
+                    <input type="number" step="0.01" name="price" class="form-control" required {% if products_obj %}value="{{ products_obj.price }}" {% endif %}>
+                </div>
+                <button class="btn btn-warning" type="submit">提交</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function () {
+            $('.history-back').on('click', function () {
+                {% if products_obj %}
+                    window.history.back();
+                {% else %}
+                    confirmAction('确认消息', '本次上传的商品图还未保存，返回后商品图需重新上传。', '继续返回', function () {
+                        $.ajax({
+                            url: '{{ url_for('.products_img') }}',
+                            type: 'delete',
+                            data: {url: '{{ url }}'},
+                            complete: function () {
+                                hideLoading(function () {
+                                    window.history.back();
+                                })
+                            }
+                        });
+                    });
+                {% endif %}
+            })
+        });
+    </script>
+{% endblock %}

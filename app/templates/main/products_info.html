@@ -8,13 +8,13 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-12 col-md-6 col-xl-4 pb-5">
-                <div class="w-100" style="padding-bottom: 100%; background: url('{{ url_for('static', filename='product/cp.png') }}') no-repeat;
+                <div class="w-100" style="padding-bottom: 100%; background: url('{{ products_obj.url }}') no-repeat;
                         background-position: center; background-size: cover;"></div>
             </div>
 
             <div class="col">
-                <p class="lead font-weight-bold">经典论语著作，全本，诵读经典，提高诵读能力，提高国风能力</p>
-                <p class="text-danger font-weight-bold">&yen; 99.9</p>
+                <p class="lead font-weight-bold">{{ products_obj.title }}</p>
+                <p class="text-danger font-weight-bold">&yen; {{ products_obj.price }}</p>
                 <form>
                     <div class="form-group">
                         <label>姓名</label>
@@ -22,7 +22,7 @@
                     </div>
                     <div class="form-group">
                         <label>联系方式</label>
-                        <input type="text" class="form-control" name="number" required>
+                        <input type="text" class="form-control" name="contacts" required placeholder="输入微信同号手机以方便联系">
                     </div>
                     <div class="form-group">
                         <label>购买数量</label>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group">
                         <label>备注</label>
-                        <input type="text" class="form-control" name="remark">
+                        <input type="text" class="form-control" name="remarks">
                     </div>
                     <button type="button" class="btn btn-warning">提交订单</button>
                 </form>
@@ -47,6 +47,10 @@
     <script type="text/javascript">
         $(function () {
             $('form button').click(function () {
+                if (!$('input[name="name"]').val() || !$('input[name="contacts"]').val() || !$('input[name="address"]').val()) {
+                    showMsg('请输入姓名、联系方式、收货地址。');
+                    return
+                }
                 $.ajax({
                     url: window.location.pathname,
                     type: 'post',
@@ -55,7 +59,16 @@
                     success: function (data) {
                         hideLoading(function () {
                             showMsg(data, function () {
-                                if (history.length <= 1) {location.replace('/');} else {history.back();}
+                                window.document.referrer === '' ? location.href = '/' : history.back();
+                                // if (history.length <= 1) {location.replace('/');} else {history.back();}
+                            })
+                        })
+                    },
+                    error: function () {
+                        hideLoading(function () {
+                            showMsg('商品下单失败，请稍后重试。', function () {
+                                window.document.referrer === '' ? location.href = '/' : history.back();
+                                // if (history.length <= 1) {location.replace('/');} else {history.back();}
                             })
                         })
                     }
