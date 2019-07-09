@@ -6,6 +6,7 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 from config import Config
 from .utils import SSLSMTPHandler
@@ -13,6 +14,10 @@ from .utils import SSLSMTPHandler
 
 db = SQLAlchemy()
 migrate = Migrate()
+login_manager = LoginManager()
+login_manager.login_message = '请先登录。'
+login_manager.login_view = 'auth_bp.login'
+login_manager.session_protection = 'strong'
 
 
 def create_app():
@@ -21,6 +26,7 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
 
     register_logging(app)
     register_errors(app)
