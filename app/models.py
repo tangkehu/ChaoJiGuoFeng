@@ -4,13 +4,20 @@ from datetime import datetime
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import db
+from app import db, login_manager
+
+
+@login_manager.user_loader
+def load_user(uid):
+    # flask-login加载用户的回调函数
+    return User.query.get(int(uid))
 
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     datetime = db.Column(db.DateTime, default=datetime.now)
-    username = db.Column(db.String(64))
+    username = db.Column(db.String(64), default='系统管理员')
+    email = db.Column(db.String(64))
     password_hash = db.Column(db.String(128))
 
     @property
@@ -23,6 +30,25 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def update(self, email, **kwargs):
+        if User.query.filter(User.id != self.id, User.email == email.strip()).count() > 0:
+            # 邮箱去重
+            return False
+        if kwargs.get('password'):
+            self.password = kwargs['password'].strip()
+        if not self.password_hash:
+            # 检查是否设置密码，若未设置密码，则返回False
+            return False
+        self.datetime = datetime.now()
+        self.username = kwargs['username'].strip() if kwargs.get('username') else self.username
+        self.email = email.strip()
+        db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 class Article(db.Model):
