@@ -45,6 +45,7 @@ class User(UserMixin, db.Model):
         self.email = email.strip()
         db.session.add(self)
         db.session.commit()
+        return True
 
     def remove(self):
         db.session.delete(self)

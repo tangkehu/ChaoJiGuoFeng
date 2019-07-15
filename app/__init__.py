@@ -38,12 +38,37 @@ def create_app():
             if _str.__len__() >= int(length):
                 _str = _str[:int(length)] + '...'
             return _str
-        return dict(BOOT_CDN=app.config['BOOT_CDN'])
+        return dict(BOOT_CDN=app.config['BOOT_CDN'], truncate_self=truncate_self)
 
     @app.cli.command()  # Flask的命令行命令注册器，类似flask run
     def deploy():
         """ 用于部署的命令行命令 """
         click.echo('部署成功')
+
+    @app.cli.command()
+    @click.option('--email', help='邮箱')
+    @click.option('--password', help='密码')
+    @click.option('--username', default='系统管理员', help='用户名')
+    def register(email, password, username):
+        """ 注册用户 """
+        from .models import User
+        flg = User().update(email=email, password=password, username=username)
+        click.echo('email: {}  password: {}  username: {}'.format(email, password, username))
+        click.echo('注册成功' if flg else '注册失败')
+
+    @app.cli.command()
+    @click.option('--email', help='邮箱')
+    @click.option('--password', help='密码')
+    def register(email, password, username):
+        """ 修改用户密码 """
+        from .models import User
+        user_ = User.query.filter_by(email=email).first()
+        click.echo('email: {}  password: {}'.format(email, password))
+        if user_:
+            flg = user_.update(email=email, password=password)
+            click.echo('修改密码成功' if flg else '修改密码失败')
+        else:
+            click.echo('不存在该用户')
 
     from .main import main_bp
     app.register_blueprint(main_bp)
