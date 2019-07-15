@@ -30,6 +30,7 @@ def create_app():
 
     register_logging(app)
     register_errors(app)
+    register_command(app)
 
     @app.context_processor  # Flask的上下文处理器，向模板的上下文插入新变量（可以是值和函数）
     def inject_context():
@@ -40,16 +41,22 @@ def create_app():
             return _str
         return dict(BOOT_CDN=app.config['BOOT_CDN'], truncate_self=truncate_self)
 
-    @app.cli.command()  # Flask的命令行命令注册器，类似flask run
-    def deploy():
-        """ 用于部署的命令行命令 """
-        click.echo('部署成功')
+    from .main import main_bp
+    app.register_blueprint(main_bp)
+    from .manage import manage_bp
+    app.register_blueprint(manage_bp, url_prefix='/manage')
 
-    @app.cli.command()
+    from . import models  # 导入数据模型，否则无法创建数据表
+
+    return app
+
+
+def register_command(app):
+    @app.cli.command()  # Flask的命令行命令注册器，类似flask run
     @click.option('--email', help='邮箱')
     @click.option('--password', help='密码')
     @click.option('--username', default='系统管理员', help='用户名')
-    def register(email, password, username):
+    def register_user(email, password, username):
         """ 注册用户 """
         from .models import User
         flg = User().update(email=email, password=password, username=username)
@@ -59,25 +66,29 @@ def create_app():
     @app.cli.command()
     @click.option('--email', help='邮箱')
     @click.option('--password', help='密码')
-    def register(email, password, username):
+    def change_pass(email, password):
         """ 修改用户密码 """
+        click.echo('email: {}  password: {}'.format(email, password))
         from .models import User
         user_ = User.query.filter_by(email=email).first()
-        click.echo('email: {}  password: {}'.format(email, password))
         if user_:
             flg = user_.update(email=email, password=password)
             click.echo('修改密码成功' if flg else '修改密码失败')
         else:
             click.echo('不存在该用户')
 
-    from .main import main_bp
-    app.register_blueprint(main_bp)
-    from .manage import manage_bp
-    app.register_blueprint(manage_bp, url_prefix='/manage')
-
-    from . import models  # 导入数据模型，否则无法创建数据表
-
-    return app
+    @app.cli.command()
+    @click.option('--email', help='邮箱')
+    def remove_user(email):
+        """ 移除用户 """
+        click.echo('email: {}'.format(email))
+        from .models import User
+        user_ = User.query.filter_by(email=email).first()
+        if user_:
+            user_.remove()
+            click.echo('用户移除成功')
+        else:
+            click.echo('不存在该用户')
 
 
 def register_errors(app):
