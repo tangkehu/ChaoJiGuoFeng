@@ -1,5 +1,6 @@
 
 from flask import render_template, request, redirect, url_for, jsonify, current_app, abort
+from flask_login import login_required
 
 from app.utils import random_filename, resize_img
 from app.models import Article, Entry, Video, Products, Indent
@@ -7,6 +8,7 @@ from . import manage_bp
 
 
 @manage_bp.route('/news')
+@login_required
 def news():
     news_list = Article.query.filter_by(type=1).order_by(Article.datetime.desc()).all()
     return render_template('manage/news.html', news_list=news_list, page_name='最新动态')
