@@ -15,7 +15,7 @@ from .utils import SSLSMTPHandler
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
-login_manager.login_message = '请先登录。'
+login_manager.login_message = '请登录。'
 login_manager.login_view = 'auth_bp.login'
 login_manager.session_protection = 'strong'
 
