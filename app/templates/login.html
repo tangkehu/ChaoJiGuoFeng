@@ -5,8 +5,6 @@
   <link href="{{ url_for('static', filename='manage-style/sb-admin-2.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block body_tag %} class="bg-gradient-warning"{% endblock %}
-
 {% block body %}
   <div class="container">
 
@@ -47,14 +45,4 @@
     </div>
 
   </div>
-{% endblock %}
-
-{% block javascript %}
-    <script type="text/javascript">
-        $(function () {
-            {% for item in get_flashed_messages() %}
-                showMsg('{{ item }}');
-            {% endfor %}
-        });
-    </script>
 {% endblock %}

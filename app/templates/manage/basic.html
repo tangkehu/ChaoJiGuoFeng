@@ -92,7 +92,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">超级国风管理员</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ current_user.username }}</span>
                 <img class="img-profile rounded-circle" src="{{ url_for('static', filename='img/logo.gif') }}">
               </a>
               <!-- Dropdown - User Information -->
@@ -160,19 +160,37 @@
 
         $('#logoutConfirm').on('click', function () {
             confirmAction('登出确认消息', '请你再次确认是否要登出当前账号，登出后需重新登录。', '登出', function () {
-                hideLoading(function () {
-                    showMsg('登出成功。');
-                });
+                location.href = '{{ url_for('auth_bp.logout') }}';
             });
         });
 
         $('#alterPassword').on('click', function () {
             let modal_body = '<input type="text" class="form-control" name="new_password" placeholder="请输入新密码">';
             confirmAction('登录密码修改', modal_body, '修改', function () {
-                console.log($('input[name="new_password"]').val());
-                hideLoading(function () {
-                    showMsg('密码修改成功。');
-                });
+                let new_pass = $('input[name="new_password"]').val();
+                if (new_pass) {
+                    let msg;
+                    $.ajax({
+                        url: '{{ url_for('auth_bp.change_pass') }}',
+                        type: 'post',
+                        data: {password: new_pass},
+                        success: function (data) {
+                            msg = data.status ? '密码修改成功。' : '密码修改失败。';
+                        },
+                        error: function () {
+                            msg = '密码修改失败。';
+                        },
+                        complete: function () {
+                            hideLoading(function () {
+                                showMsg(msg)
+                            })
+                        }
+                    })
+                } else {
+                    hideLoading(function () {
+                        showMsg('请输入新密码。');
+                    });
+                }
             });
         });
     });

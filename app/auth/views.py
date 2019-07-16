@@ -1,5 +1,5 @@
 
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from app.models import User
 from . import auth_bp
@@ -29,3 +29,11 @@ def logout():
     logout_user()
     flash('账号退出成功。')
     return redirect(url_for('main_bp.index'))
+
+
+@auth_bp.route('/change_pass', methods=['POST'])
+def change_pass():
+    flg = False
+    if current_user.is_authenticated:
+        flg = current_user.update(email=current_user.email, password=request.form.get('password', '').strip())
+    return jsonify({'status': flg})

@@ -113,6 +113,11 @@
             confirmAction('删除操作确认消息', '请再次确认是否要删除这条内容！删除后无法恢复。', '删除', func)
         }
 
+        $(function () {
+            {% if get_flashed_messages() %}
+                showMsg('{{ get_flashed_messages()[0] }}');
+            {% endif %}
+        });
     </script>
 
     {% block javascript %}{% endblock %}
