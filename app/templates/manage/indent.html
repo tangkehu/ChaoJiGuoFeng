@@ -37,7 +37,12 @@
                         <td class="text-nowrap">{{ item.name }}</td>
                         <td class="text-nowrap">{{ item.contacts | truncate(15) }}</td>
                         <td class="text-nowrap">{{ item.address | truncate(15) }}</td>
-                        <td class="text-nowrap">{{ item.products_id }}</td>
+                        <td class="text-nowrap">
+                            <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#productModal"
+                                    data-purl="{{ item.products.url }}" data-pname="{{ item.products.title }}" data-pprice="{{ item.products.price }}">
+                                {{ item.products_id }}号
+                            </button>
+                        </td>
                         <td class="text-nowrap">{{ item.count }}</td>
                         <td class="text-nowrap">{{ item.total }}</td>
                         <td class="text-nowrap">{{ item.remarks | truncate(15) }}</td>
@@ -64,6 +69,32 @@
                 </table>
             </div>
         </div>
+    </div>
+
+    <!-- product_info modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="productModalLabel">订单商品详情</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6 mb-3"><div id="product-img" class="rounded"></div></div>
+                <div class="col">
+                  <h6 id="product-name"></h6>
+                  <p id="product-price" class="text-danger"></p>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     {% include 'manage/_js_table.html' %}
@@ -119,6 +150,18 @@
                         }
                     });
                 })
+            });
+
+            $('#productModal').on('show.bs.modal', function (event) {
+                let $object = $(event.relatedTarget);
+                let purl = $object.data('purl');
+                let pname = $object.data('pname');
+                let pprice = $object.data('pprice');
+                let pstyle = 'height: 0; padding-bottom: 100%; background: url(\''+purl+'\') no-repeat; background-position: center; background-size: cover';
+                let $modal = $(this);
+                $modal.find('#product-img').attr('style', pstyle);
+                $modal.find('#product-name').html(pname);
+                $modal.find('#product-price').html(pprice);
             })
         });
     </script>

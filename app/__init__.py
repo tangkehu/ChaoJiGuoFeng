@@ -6,6 +6,7 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 from config import Config
 from .utils import SSLSMTPHandler
@@ -13,6 +14,10 @@ from .utils import SSLSMTPHandler
 
 db = SQLAlchemy()
 migrate = Migrate()
+login_manager = LoginManager()
+login_manager.login_message = '请登录。'
+login_manager.login_view = 'auth_bp.login'
+login_manager.session_protection = 'strong'
 
 
 def create_app():
@@ -21,9 +26,11 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
 
     register_logging(app)
     register_errors(app)
+    register_command(app)
 
     @app.context_processor  # Flask的上下文处理器，向模板的上下文插入新变量（可以是值和函数）
     def inject_context():
@@ -32,21 +39,58 @@ def create_app():
             if _str.__len__() >= int(length):
                 _str = _str[:int(length)] + '...'
             return _str
-        return dict(BOOT_CDN=app.config['BOOT_CDN'])
-
-    @app.cli.command()  # Flask的命令行命令注册器，类似flask run
-    def deploy():
-        """ 用于部署的命令行命令 """
-        click.echo('部署成功')
+        return dict(BOOT_CDN=app.config['BOOT_CDN'], truncate_self=truncate_self)
 
     from .main import main_bp
     app.register_blueprint(main_bp)
+    from .auth import auth_bp
+    app.register_blueprint(auth_bp)
     from .manage import manage_bp
     app.register_blueprint(manage_bp, url_prefix='/manage')
 
     from . import models  # 导入数据模型，否则无法创建数据表
 
     return app
+
+
+def register_command(app):
+    @app.cli.command()  # Flask的命令行命令注册器，类似flask run
+    @click.option('--email', help='邮箱')
+    @click.option('--password', help='密码')
+    @click.option('--username', default='系统管理员', help='用户名')
+    def register_user(email, password, username):
+        """ 注册用户 """
+        from .models import User
+        flg = User().update(email=email, password=password, username=username)
+        click.echo('email: {}  password: {}  username: {}'.format(email, password, username))
+        click.echo('注册成功' if flg else '注册失败')
+
+    @app.cli.command()
+    @click.option('--email', help='邮箱')
+    @click.option('--password', help='密码')
+    def change_pass(email, password):
+        """ 修改用户密码 """
+        click.echo('email: {}  password: {}'.format(email, password))
+        from .models import User
+        user_ = User.query.filter_by(email=email).first()
+        if user_:
+            flg = user_.update(email=email, password=password)
+            click.echo('修改密码成功' if flg else '修改密码失败')
+        else:
+            click.echo('不存在该用户')
+
+    @app.cli.command()
+    @click.option('--email', help='邮箱')
+    def remove_user(email):
+        """ 移除用户 """
+        click.echo('email: {}'.format(email))
+        from .models import User
+        user_ = User.query.filter_by(email=email).first()
+        if user_:
+            user_.remove()
+            click.echo('用户移除成功')
+        else:
+            click.echo('不存在该用户')
 
 
 def register_errors(app):
